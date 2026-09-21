@@ -23,7 +23,7 @@ export default function SocialCreativesPage() {
         description="Each one is a direction, not a finished ad. Approve what feels like your dining room. Captions stay editable."
       />
       {concepts.length === 0 ? (
-        <p className="text-sm text-ink-soft">No social concepts yet. Approve Brand DNA to generate the starter set.</p>
+        <p className="text-sm text-ink-soft">No post ideas yet. Approve your brand profile to generate a starter set.</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {concepts.map((c) => {

@@ -18,34 +18,34 @@ export function ColorSwatches({ colours }: { colours: NonNullable<BrandDNA["colo
 export function BrandBoard({ dna }: { dna: BrandDNA }) {
   return (
     <div className="grid gap-4 lg:grid-cols-3">
-      <Card className="p-6 lg:col-span-2">
-        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Positioning</p>
+      <Card className="p-5 sm:p-6 lg:col-span-2">
+        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">What you’re known for</p>
         <p className="mt-3 font-display text-3xl leading-snug">{dna.positioning}</p>
         <p className="mt-4 text-sm text-ink-soft">{dna.audience}</p>
         {dna.tagline ? (
           <p className="mt-6 inline-block border-t border-line pt-4 font-display text-xl italic">{dna.tagline}</p>
         ) : null}
       </Card>
-      <Card className="p-6">
-        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Voice & personality</p>
+      <Card className="p-5 sm:p-6">
+        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">How you sound</p>
         <p className="mt-3 text-sm leading-relaxed">{dna.personality}</p>
         <p className="mt-3 text-sm leading-relaxed text-ink-soft">{dna.voice}</p>
       </Card>
-      <Card className="p-6">
-        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Colour</p>
+      <Card className="p-5 sm:p-6">
+        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Colours</p>
         {dna.colours ? <div className="mt-4"><ColorSwatches colours={dna.colours} /></div> : <p className="mt-3 text-sm text-ink-soft">No colours yet.</p>}
       </Card>
-      <Card className="p-6">
-        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Typography</p>
+      <Card className="p-5 sm:p-6">
+        <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Fonts</p>
         <p className="mt-3 font-display text-3xl">{dna.typography?.heading ?? "Fraunces"}</p>
         <p className="mt-1 text-sm">{dna.typography?.body ?? "Outfit"}</p>
         <p className="mt-3 text-xs text-ink-soft">{dna.typography?.notes}</p>
       </Card>
-      <Card className="p-6">
+      <Card className="p-5 sm:p-6">
         <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">How to show up</p>
         <dl className="mt-3 space-y-3 text-sm">
           <div>
-            <dt className="text-ink-soft">Photography</dt>
+            <dt className="text-ink-soft">Photos</dt>
             <dd>{dna.photographyDirection}</dd>
           </div>
           <div>
@@ -57,7 +57,7 @@ export function BrandBoard({ dna }: { dna: BrandDNA }) {
             <dd>{dna.graphicStyle}</dd>
           </div>
           <div>
-            <dt className="text-ink-soft">Calls to action</dt>
+            <dt className="text-ink-soft">Buttons</dt>
             <dd>{dna.ctaStyle}</dd>
           </div>
         </dl>

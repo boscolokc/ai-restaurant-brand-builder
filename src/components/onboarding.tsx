@@ -1,44 +1,116 @@
+"use client";
+
+import type { ReactNode } from "react";
 import Link from "next/link";
-import { ONBOARDING_PATHS } from "@/lib/utils";
+import { Check } from "lucide-react";
+import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { ONBOARDING_PATHS, type OnboardingPath } from "@/lib/utils";
+import { prevPath, stepNumber, WIZARD_COPY } from "@/lib/onboarding";
 
-const LABELS: Record<string, string> = {
-  basics: "Basics",
-  assets: "Photos",
-  business: "Business",
-  analyzing: "Reading",
-  "brand-dna": "Brand DNA",
-  generating: "Building",
-  done: "Ready",
-};
+export function OnboardingStepper({ current }: { current: string }) {
+  const path = (ONBOARDING_PATHS.includes(current as OnboardingPath) ? current : "basics") as OnboardingPath;
+  const n = stepNumber(path);
+  const total = ONBOARDING_PATHS.length;
+  const copy = WIZARD_COPY[path];
+  const pct = (n / total) * 100;
 
-export function OnboardingStepper({
+  return (
+    <div className="mb-6 sm:mb-8">
+      <p className="text-sm font-medium text-ink-soft">
+        Step {n} of {total}
+      </p>
+      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-paper-2">
+        <div className="h-full rounded-full bg-accent transition-all duration-300" style={{ width: `${pct}%` }} />
+      </div>
+      <ol className="mt-3 flex gap-1.5" aria-hidden>
+        {ONBOARDING_PATHS.map((step, i) => (
+          <li
+            key={step}
+            className={cn(
+              "h-1.5 flex-1 rounded-full",
+              i < n ? "bg-accent" : "bg-paper-2",
+            )}
+          />
+        ))}
+      </ol>
+      <h1 className="mt-5 font-display text-3xl leading-tight text-ink sm:text-4xl">{copy.title}</h1>
+      <p className="mt-2 max-w-xl text-base leading-relaxed text-ink-soft">{copy.helper}</p>
+    </div>
+  );
+}
+
+export function WizardActions({
   restaurantId,
   current,
+  onContinue,
+  continueLabel,
+  continueDisabled,
+  hideBack,
+  extra,
 }: {
   restaurantId: string;
   current: string;
+  onContinue?: () => void;
+  continueLabel?: string;
+  continueDisabled?: boolean;
+  hideBack?: boolean;
+  extra?: ReactNode;
 }) {
-  const idx = ONBOARDING_PATHS.indexOf(current as (typeof ONBOARDING_PATHS)[number]);
+  const path = (ONBOARDING_PATHS.includes(current as OnboardingPath) ? current : "basics") as OnboardingPath;
+  const back = prevPath(path);
+  const label = continueLabel ?? WIZARD_COPY[path].continueLabel;
+
   return (
-    <ol className="mb-10 flex flex-wrap gap-2">
-      {ONBOARDING_PATHS.map((step, i) => {
-        const done = i < idx;
-        const active = i === idx;
+    <div className="sticky bottom-0 z-10 -mx-4 mt-8 border-t border-line bg-paper/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0 sm:pt-6">
+      {extra}
+      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {!hideBack && back ? (
+          <Button asChild variant="ghost" size="lg" className="min-h-12 w-full sm:w-auto">
+            <Link href={`/app/${restaurantId}/onboarding/${back}`}>Back</Link>
+          </Button>
+        ) : (
+          <span className="hidden sm:block" />
+        )}
+        <Button
+          size="lg"
+          className="min-h-12 w-full sm:min-w-44 sm:w-auto"
+          disabled={continueDisabled}
+          onClick={onContinue}
+          type={onContinue ? "button" : "submit"}
+        >
+          {label}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export function CoachNote({ children }: { children: ReactNode }) {
+  return (
+    <p className="rounded-2xl bg-paper-2 px-4 py-3 text-sm leading-relaxed text-ink">{children}</p>
+  );
+}
+
+export function ProgressList({ items, active }: { items: string[]; active: number }) {
+  return (
+    <ol className="space-y-3">
+      {items.map((item, i) => {
+        const done = i < active;
+        const current = i === active;
         return (
-          <li key={step}>
-            <Link
-              href={`/app/${restaurantId}/onboarding/${step}`}
+          <li key={item} className="flex items-start gap-3">
+            <span
               className={cn(
-                "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs",
-                active && "border-ink bg-ink text-paper",
-                done && "border-accent-2/30 bg-accent-2/10 text-accent-2",
-                !active && !done && "border-line text-ink-soft",
+                "mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-medium",
+                done && "bg-accent-2 text-white",
+                current && "bg-accent text-white",
+                !done && !current && "border border-line text-ink-soft",
               )}
             >
-              <span>{i + 1}</span>
-              {LABELS[step]}
-            </Link>
+              {done ? <Check className="h-4 w-4" /> : i + 1}
+            </span>
+            <span className={cn("pt-0.5 text-base", current ? "text-ink" : "text-ink-soft")}>{item}</span>
           </li>
         );
       })}

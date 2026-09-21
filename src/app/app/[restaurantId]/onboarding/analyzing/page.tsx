@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Button, Card, Progress } from "@/components/ui";
+import { Card, Progress } from "@/components/ui";
+import { CoachNote, ProgressList, WizardActions } from "@/components/onboarding";
 import { useAppStore, useRestaurantBundle } from "@/lib/mock/store";
 import { brandIntelligence } from "@/lib/ai";
 
 const BEATS = [
-  "Looking at light and plates…",
-  "Noting the room, not just the food…",
-  "Drafting voice and colour…",
-  "Laying out Brand DNA for your review…",
+  "Looking at the light and plates",
+  "Noticing the room, not just the food",
+  "Drafting words and colours for you to check",
 ];
 
 export default function OnboardingAnalyzingPage() {
@@ -40,22 +40,20 @@ export default function OnboardingAnalyzingPage() {
       clearInterval(timer);
       window.clearTimeout(work);
     };
-    // finish reads stable store actions; restaurantId is the only input that should restart.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [restaurantId]);
 
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Step 4</p>
-      <h1 className="mt-2 font-display text-4xl">Reading the room</h1>
-      <Card className="mt-8 p-8">
-        <p className="font-display text-2xl">{BEATS[beat]}</p>
-        <Progress className="mt-6" value={progress} />
-        <p className="mt-3 text-xs text-ink-soft">Mock AI adapter · no API keys · {assets.length} files</p>
-        <Button className="mt-6" variant="outline" onClick={finish}>
-          Skip wait
-        </Button>
+      <CoachNote>
+        You don’t need to do anything. Next we’ll show a brand profile — words and colours — and you decide if it feels
+        like {assets.length ? "your photos" : "your restaurant"}.
+      </CoachNote>
+      <Card className="mt-5 p-5 sm:p-6">
+        <Progress className="mb-6" value={progress} />
+        <ProgressList items={BEATS} active={beat} />
       </Card>
+      <WizardActions restaurantId={restaurantId} current="analyzing" onContinue={finish} />
     </div>
   );
 }

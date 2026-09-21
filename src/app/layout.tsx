@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s · Hearth",
   },
   description:
-    "Turn restaurant photos and info into Brand DNA, then a consistent starter package: kit, website, social, video, menu, and a 30-day plan.",
+    "Turn restaurant photos and info into a brand profile, then a starter kit: colours, website, social, video, menu, and a 30-day plan.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

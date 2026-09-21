@@ -24,7 +24,7 @@ const ACTIONS = [
   {
     href: "content",
     title: "Menu asset",
-    copy: "A clean one-pager from Brand DNA. Found in Content when ready.",
+    copy: "A clean one-pager from your brand kit. You’ll find it under Content.",
     icon: UtensilsCrossed,
     job: "SINGLE_CREATIVE" as const,
   },
@@ -48,13 +48,13 @@ export default function CreateHubPage() {
       <PageHeader
         eyebrow="Create"
         title="What should we make?"
-        description="Plain language. You pick a type, we draft against Brand DNA, you review. Nothing publishes itself."
+        description="Pick a type. We draft in your voice. You review. Nothing posts itself."
       />
       {!brandDna || brandDna.status !== "APPROVED" ? (
         <Card className="p-6">
-          <p className="text-sm">Approve Brand DNA first so new work stays on-brand.</p>
-          <Button className="mt-4" asChild>
-            <Link href={`/app/${restaurantId}/onboarding/brand-dna`}>Review Brand DNA</Link>
+          <p className="text-base">Look over your brand profile first so new work stays on-brand.</p>
+          <Button className="mt-4 min-h-12 w-full sm:w-auto" asChild>
+            <Link href={`/app/${restaurantId}/onboarding/brand-dna`}>Look over brand profile</Link>
           </Button>
         </Card>
       ) : null}

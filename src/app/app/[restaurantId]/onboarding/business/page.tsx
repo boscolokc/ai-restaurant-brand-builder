@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Button, Card, Field, Input, Textarea } from "@/components/ui";
+import { Card, Field, Input, Textarea } from "@/components/ui";
+import { WizardActions } from "@/components/onboarding";
 import { useAppStore, useRestaurant } from "@/lib/mock/store";
 
 export default function OnboardingBusinessPage() {
@@ -13,39 +14,36 @@ export default function OnboardingBusinessPage() {
   const [phone, setPhone] = useState(restaurant?.phone ?? "");
   const [hours, setHours] = useState("Tue–Sat 5–10");
 
+  function goNext(save: boolean) {
+    if (save) updateRestaurant(restaurantId, { phone: phone || null });
+    setOnboardingStep(restaurantId, "ANALYZING");
+    router.push(`/app/${restaurantId}/onboarding/analyzing`);
+  }
+
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Step 3 · optional</p>
-      <h1 className="mt-2 font-display text-4xl">Hours, phone, a little practical</h1>
-      <p className="mt-2 text-sm text-ink-soft">Skip if you want. We’ll still draft Brand DNA from photos and the basics.</p>
-      <Card className="mt-8 space-y-4 p-6">
+      <Card className="space-y-4 p-5 sm:p-6">
         <Field label="Phone">
-          <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <Input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" />
         </Field>
         <Field label="Hours (as guests should read them)">
           <Textarea value={hours} onChange={(e) => setHours(e.target.value)} className="min-h-20" />
         </Field>
-        <div className="flex gap-2">
-          <Button
-            onClick={() => {
-              updateRestaurant(restaurantId, { phone: phone || null });
-              setOnboardingStep(restaurantId, "ANALYZING");
-              router.push(`/app/${restaurantId}/onboarding/analyzing`);
-            }}
-          >
-            Read my photos
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setOnboardingStep(restaurantId, "ANALYZING");
-              router.push(`/app/${restaurantId}/onboarding/analyzing`);
-            }}
-          >
-            Skip
-          </Button>
-        </div>
       </Card>
+      <WizardActions
+        restaurantId={restaurantId}
+        current="business"
+        onContinue={() => goNext(true)}
+        extra={
+          <button
+            type="button"
+            className="mb-3 w-full py-2 text-center text-sm text-ink-soft underline-offset-2 hover:underline sm:mb-0 sm:w-auto sm:text-left"
+            onClick={() => goNext(false)}
+          >
+            Skip for now
+          </button>
+        }
+      />
     </div>
   );
 }

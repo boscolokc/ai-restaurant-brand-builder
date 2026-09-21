@@ -1,38 +1,57 @@
 "use client";
 
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import { Button, Card } from "@/components/ui";
-import { StarterPackageGrid } from "@/components/package";
+import { useParams, useRouter } from "next/navigation";
+import { Card } from "@/components/ui";
+import { CoachNote, WizardActions } from "@/components/onboarding";
 import { useRestaurantBundle } from "@/lib/mock/store";
+import { Check } from "lucide-react";
+
+const MADE = [
+  "A brand kit (colours, fonts, how you sound)",
+  "A simple phone website",
+  "12 social post ideas",
+  "4 short video sketches",
+  "Menu and Google text, plus a 30-day plan",
+];
 
 export default function OnboardingDonePage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
-  const { restaurant, starter } = useRestaurantBundle(restaurantId);
+  const router = useRouter();
+  const { restaurant } = useRestaurantBundle(restaurantId);
 
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Ready</p>
-      <h1 className="mt-2 font-display text-4xl">{restaurant?.name} has a kit</h1>
-      <p className="mt-2 max-w-xl text-sm text-ink-soft">
-        Brand DNA is approved. Your starter package is on Home. Nothing is live until you publish or post.
-      </p>
-      {starter ? (
-        <div className="mt-8">
-          <StarterPackageGrid restaurantId={restaurantId} starter={starter} />
-        </div>
-      ) : null}
-      <Card className="mt-8 flex flex-wrap items-center justify-between gap-4 p-6">
-        <p className="font-display text-xl">Primary next step: make something new.</p>
-        <div className="flex gap-2">
-          <Button asChild>
-            <Link href={`/app/${restaurantId}`}>Go to Home</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href={`/app/${restaurantId}/create`}>Create content</Link>
-          </Button>
-        </div>
+      <CoachNote>
+        {restaurant?.name ?? "Your restaurant"} now has a kit. Look at one post first. You can ignore the rest for now.
+      </CoachNote>
+      <Card className="mt-5 p-5 sm:p-6">
+        <p className="text-sm font-medium text-ink-soft">What we made</p>
+        <ul className="mt-4 space-y-3">
+          {MADE.map((item) => (
+            <li key={item} className="flex items-start gap-3 text-base">
+              <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent-2 text-white">
+                <Check className="h-4 w-4" />
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
       </Card>
+      <WizardActions
+        restaurantId={restaurantId}
+        current="done"
+        hideBack
+        onContinue={() => router.push(`/app/${restaurantId}/create`)}
+        extra={
+          <button
+            type="button"
+            className="mb-3 w-full py-2 text-center text-sm text-ink-soft underline-offset-2 hover:underline sm:text-left"
+            onClick={() => router.push(`/app/${restaurantId}`)}
+          >
+            See everything on Home
+          </button>
+        }
+      />
     </div>
   );
 }

@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui";
 import { useAppStore, useRestaurant } from "@/lib/mock/store";
-import { cn, NAV_ITEMS, STEP_TO_PATH } from "@/lib/utils";
+import { cn, NAV_ITEMS } from "@/lib/utils";
 import { useEffect, useState, type ReactNode } from "react";
 
 const ICONS = {
@@ -66,7 +66,7 @@ export function MarketingHeader() {
 export function MarketingFooter() {
   return (
     <footer className="mt-auto border-t border-line py-8 text-center text-xs text-ink-soft">
-      Hearth — your AI restaurant branding & marketing team. Phase 1 scaffold.
+      Hearth — your AI restaurant branding & marketing team.
     </footer>
   );
 }
@@ -81,7 +81,7 @@ export function RestaurantSwitcher({ currentId }: { currentId?: string }) {
       </label>
       <select
         id="restaurant-switcher"
-        className="h-9 max-w-[180px] rounded-full border border-line bg-white px-3 text-sm"
+        className="h-11 min-h-11 max-w-[180px] rounded-full border border-line bg-white px-3 text-sm"
         value={currentId ?? "switch"}
         onChange={(e) => {
           const id = e.target.value;
@@ -112,9 +112,9 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
   useEffect(() => {
     if (!restaurant) return;
     const onOnboarding = pathname.includes("/onboarding");
-    if (!restaurant.onboardingDone && !onOnboarding) {
-      const step = STEP_TO_PATH[restaurant.onboardingStep] ?? "basics";
-      router.replace(`/app/${restaurantId}/onboarding/${step}`);
+    const onHome = pathname === `/app/${restaurantId}` || pathname === `/app/${restaurantId}/`;
+    if (!restaurant.onboardingDone && !onOnboarding && !onHome) {
+      router.replace(`/app/${restaurantId}`);
     }
   }, [restaurant, pathname, restaurantId, router]);
 
@@ -132,18 +132,21 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
 
   const base = `/app/${restaurantId}`;
   const onboarding = pathname.includes("/onboarding");
+  const setupIncomplete = !restaurant.onboardingDone;
 
-  if (onboarding) {
+  if (onboarding || setupIncomplete) {
     return (
       <div className="flex min-h-full flex-col">
-        <header className="flex h-16 items-center justify-between border-b border-line px-4">
-          <Logo />
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-ink-soft sm:inline">{restaurant.name}</span>
-            <RestaurantSwitcher currentId={restaurantId} />
-          </div>
+        <header className="flex h-14 items-center justify-between gap-3 border-b border-line px-4 sm:h-16">
+          <Link href={`/app/${restaurantId}`} className="flex items-center gap-2 font-display text-lg tracking-tight sm:text-xl">
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-[15px] text-paper">H</span>
+            Hearth
+          </Link>
+          <Link href="/app" className="min-h-11 px-2 text-sm text-ink-soft hover:text-ink">
+            All kitchens
+          </Link>
         </header>
-        <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10">{children}</main>
+        <main className="mx-auto w-full max-w-xl flex-1 px-4 py-6 sm:max-w-2xl sm:py-10">{children}</main>
       </div>
     );
   }
@@ -164,7 +167,7 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
                 key={item.label}
                 href={href}
                 className={cn(
-                  "flex items-center gap-2 rounded-xl px-3 py-2 text-sm",
+                  "flex min-h-11 items-center gap-2 rounded-xl px-3 py-2.5 text-sm",
                   active ? "bg-ink text-paper" : "text-ink-soft hover:bg-paper-2 hover:text-ink",
                 )}
               >
@@ -213,7 +216,7 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
               <Link
                 key={item.label}
                 href={`${base}${item.href}`}
-                className="rounded-full border border-line px-3 py-1 text-sm"
+                className="inline-flex min-h-11 items-center rounded-full border border-line px-4 py-2 text-sm"
                 onClick={() => setOpen(false)}
               >
                 {item.label}

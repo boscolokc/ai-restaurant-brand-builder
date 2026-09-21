@@ -11,7 +11,7 @@ export default function BrandGuidePage() {
     { title: "Do", body: brandDna?.photographyDirection ?? "Shoot food in the room it is eaten." },
     { title: "Don’t", body: "No clipart chili peppers, no stock ‘chef smile’, no neon sale stickers." },
     { title: "Voice", body: brandDna?.voice ?? "Short and specific." },
-    { title: "CTA", body: brandDna?.ctaStyle ?? "Invite people in. Don’t shout." },
+    { title: "Buttons", body: brandDna?.ctaStyle ?? "Invite people in. Don’t shout." },
   ];
   return (
     <div>

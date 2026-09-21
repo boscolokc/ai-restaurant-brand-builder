@@ -25,7 +25,7 @@ export default function VideoFlowPage() {
         description="Four concepts. Step through shots, listen for the room, then decide. Rendering is out of scope for Phase 1."
       />
       {videos.length === 0 ? (
-        <p className="text-sm text-ink-soft">No video concepts yet. They appear after Brand DNA is approved.</p>
+        <p className="text-sm text-ink-soft">No video ideas yet. They appear after you approve your brand profile.</p>
       ) : (
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
           <ol className="space-y-2">

@@ -10,8 +10,8 @@ const steps = [
   },
   {
     n: "02",
-    title: "Review your Brand DNA",
-    copy: "Positioning, voice, colour, type, and how photos and video should feel. You approve before anything ships.",
+    title: "Check your brand profile",
+    copy: "Words, colours, and how photos should feel. You approve before we make posts.",
   },
   {
     n: "03",
@@ -32,7 +32,7 @@ export default function MarketingHome() {
               Your AI restaurant branding & marketing team.
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-soft">
-              Hearth turns food photos and a little context into Brand DNA — then a consistent starter package. Not a
+              Hearth turns food photos and a little context into a brand profile — then a starter kit. Not a
               generic poster generator.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -49,7 +49,7 @@ export default function MarketingHome() {
             <div className="rounded-3xl bg-[#1f4e5a] p-6 text-[#f4efe6] sm:row-span-2">
               <p className="text-xs uppercase tracking-[0.2em] text-[#c4a574]">Harbor Table</p>
               <p className="mt-8 font-display text-4xl">Come in from the weather.</p>
-              <p className="mt-6 text-sm text-white/70">Pacific coastal · Portland · approved Brand DNA</p>
+              <p className="mt-6 text-sm text-white/70">Pacific coastal · Portland · brand profile approved</p>
             </div>
             <div className="rounded-3xl bg-[#2f4a32] p-6 text-[#f7f4ec]">
               <p className="text-xs uppercase tracking-[0.2em] text-[#c6d46a]">Little Lime</p>

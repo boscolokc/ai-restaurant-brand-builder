@@ -10,7 +10,7 @@ export default function BrandEditPage() {
   const { brandDna } = useRestaurantBundle(restaurantId);
   const { saveBrandDna } = useAppStore();
 
-  if (!brandDna) return <p>No Brand DNA to edit yet.</p>;
+  if (!brandDna) return <p>No brand profile to edit yet.</p>;
 
   function save(form: FormData) {
     saveBrandDna(restaurantId, {
@@ -31,8 +31,8 @@ export default function BrandEditPage() {
     <div>
       <PageHeader
         eyebrow="Edit"
-        title="Tweak Brand DNA"
-        description="Edits stay in this demo. Later, saving will version the record and mark the old one superseded."
+        title="Edit brand profile"
+        description="Change the words if they don’t sound like you. You can always come back."
       />
       <Card className="p-6">
         <form
@@ -44,19 +44,19 @@ export default function BrandEditPage() {
           <Field label="Tagline">
             <Textarea name="tagline" defaultValue={brandDna.tagline ?? ""} className="min-h-16" />
           </Field>
-          <Field label="Positioning">
+          <Field label="What you’re known for">
             <Textarea name="positioning" defaultValue={brandDna.positioning ?? ""} />
           </Field>
-          <Field label="Audience">
+          <Field label="Who you cook for">
             <Textarea name="audience" defaultValue={brandDna.audience ?? ""} />
           </Field>
           <Field label="Personality">
             <Textarea name="personality" defaultValue={brandDna.personality ?? ""} />
           </Field>
-          <Field label="Voice">
+          <Field label="How you sound">
             <Textarea name="voice" defaultValue={brandDna.voice ?? ""} />
           </Field>
-          <Field label="Photography">
+          <Field label="Photos">
             <Textarea name="photographyDirection" defaultValue={brandDna.photographyDirection ?? ""} />
           </Field>
           <Field label="Video">
@@ -65,10 +65,12 @@ export default function BrandEditPage() {
           <Field label="Graphics">
             <Textarea name="graphicStyle" defaultValue={brandDna.graphicStyle ?? ""} />
           </Field>
-          <Field label="Calls to action">
+          <Field label="Buttons">
             <Textarea name="ctaStyle" defaultValue={brandDna.ctaStyle ?? ""} />
           </Field>
-          <Button type="submit">Save board</Button>
+          <Button type="submit" className="min-h-12 w-full sm:w-auto">
+            Save
+          </Button>
         </form>
       </Card>
     </div>

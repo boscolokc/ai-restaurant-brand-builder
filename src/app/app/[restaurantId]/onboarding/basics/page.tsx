@@ -1,7 +1,8 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { Button, Card, Field, Input, Textarea } from "@/components/ui";
+import { Card, Field, Input, Textarea } from "@/components/ui";
+import { WizardActions } from "@/components/onboarding";
 import { useAppStore, useRestaurant } from "@/lib/mock/store";
 import { useState } from "react";
 
@@ -17,17 +18,20 @@ export default function OnboardingBasicsPage() {
 
   if (!restaurant) return null;
 
+  function continueNext() {
+    updateRestaurant(restaurantId, { name, cuisine, city, description });
+    setOnboardingStep(restaurantId, "ASSETS");
+    router.push(`/app/${restaurantId}/onboarding/assets`);
+  }
+
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Step 1</p>
-      <h1 className="mt-2 font-display text-4xl">Tell us about the restaurant</h1>
-      <p className="mt-2 text-sm text-ink-soft">Plain facts. We’ll write the brand language — you just check that it’s true.</p>
-      <Card className="mt-8 space-y-4 p-6">
-        <Field label="Name">
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
+      <Card className="space-y-4 p-5 sm:p-6">
+        <Field label="Restaurant name">
+          <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="organization" />
         </Field>
         <Field label="What kind of food">
-          <Input value={cuisine} onChange={(e) => setCuisine(e.target.value)} />
+          <Input value={cuisine} onChange={(e) => setCuisine(e.target.value)} placeholder="e.g. noodles, grill, cafe" />
         </Field>
         <Field label="City">
           <Input value={city} onChange={(e) => setCity(e.target.value)} />
@@ -35,16 +39,13 @@ export default function OnboardingBasicsPage() {
         <Field label="In one or two sentences">
           <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
         </Field>
-        <Button
-          onClick={() => {
-            updateRestaurant(restaurantId, { name, cuisine, city, description });
-            setOnboardingStep(restaurantId, "ASSETS");
-            router.push(`/app/${restaurantId}/onboarding/assets`);
-          }}
-        >
-          Continue to photos
-        </Button>
       </Card>
+      <WizardActions
+        restaurantId={restaurantId}
+        current="basics"
+        continueDisabled={!name.trim()}
+        onContinue={continueNext}
+      />
     </div>
   );
 }

@@ -13,5 +13,5 @@ export default function OnboardingIndexPage() {
     const step = STEP_TO_PATH[restaurant?.onboardingStep ?? "BASICS"] ?? "basics";
     router.replace(`/app/${restaurantId}/onboarding/${step}`);
   }, [restaurant, restaurantId, router]);
-  return <p className="text-sm text-ink-soft">Opening the next onboarding step…</p>;
+  return <p className="text-base text-ink-soft">Opening the next step…</p>;
 }

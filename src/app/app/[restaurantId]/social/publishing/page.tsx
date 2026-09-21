@@ -8,7 +8,7 @@ export default function SocialPublishingPage() {
       <PageHeader
         eyebrow="Publishing"
         title="Connect Instagram, Facebook, TikTok"
-        description="Out of scope for this scaffold. You’ll review in Hearth first, then push — never the other way around."
+        description="You’ll review in Hearth first, then push — never the other way around. Connecting accounts comes later."
       />
       <ComingSoon
         title="No live posting in Phase 1"

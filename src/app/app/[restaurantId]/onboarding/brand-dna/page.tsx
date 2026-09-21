@@ -1,57 +1,80 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { BrandBoard } from "@/components/brand-ui";
-import { Button, Card } from "@/components/ui";
+import { Card, Field, Textarea } from "@/components/ui";
+import { CoachNote, WizardActions } from "@/components/onboarding";
 import { useAppStore, useRestaurantBundle } from "@/lib/mock/store";
 
 export default function OnboardingBrandDnaPage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const router = useRouter();
   const { brandDna, restaurant } = useRestaurantBundle(restaurantId);
-  const { approveBrandDna, ensureDraftBrandDna } = useAppStore();
+  const { approveBrandDna, ensureDraftBrandDna, saveBrandDna } = useAppStore();
+  const [editing, setEditing] = useState(false);
 
   if (!brandDna) {
     return (
-      <Card className="p-8">
-        <p>No draft yet.</p>
-        <Button
-          className="mt-4"
-          onClick={() => {
-            ensureDraftBrandDna(restaurantId);
-          }}
-        >
-          Draft Brand DNA
-        </Button>
+      <Card className="p-6">
+        <p className="text-base">We don’t have a draft yet.</p>
+        <WizardActions
+          restaurantId={restaurantId}
+          current="brand-dna"
+          continueLabel="Draft my brand profile"
+          onContinue={() => ensureDraftBrandDna(restaurantId)}
+        />
       </Card>
     );
   }
 
+  function approve() {
+    approveBrandDna(restaurantId);
+    router.push(`/app/${restaurantId}/onboarding/generating`);
+  }
+
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Step 5 · review</p>
-      <h1 className="mt-2 font-display text-4xl">Does this sound like {restaurant?.name}?</h1>
-      <p className="mt-2 max-w-2xl text-sm text-ink-soft">
-        Nothing else generates until you approve. If a line feels off, you can still continue — you can edit the board
-        later.
-      </p>
-      <div className="mt-8">
+      <CoachNote>
+        This is your brand profile for {restaurant?.name ?? "the restaurant"}. If a line feels off, change it. If it
+        feels right, continue — we’ll make posts and a simple site next.
+      </CoachNote>
+      <div className="mt-5">
         <BrandBoard dna={brandDna} />
       </div>
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Button
-          size="lg"
-          onClick={() => {
-            approveBrandDna(restaurantId);
-            router.push(`/app/${restaurantId}/onboarding/generating`);
-          }}
+      {editing ? (
+        <Card className="mt-5 space-y-4 p-5 sm:p-6">
+          <Field label="Tagline">
+            <Textarea
+              name="tagline"
+              defaultValue={brandDna.tagline ?? ""}
+              className="min-h-16"
+              onBlur={(e) => saveBrandDna(restaurantId, { tagline: e.target.value })}
+            />
+          </Field>
+          <Field label="What you’re known for">
+            <Textarea
+              defaultValue={brandDna.positioning ?? ""}
+              onBlur={(e) => saveBrandDna(restaurantId, { positioning: e.target.value })}
+            />
+          </Field>
+          <Field label="How you sound">
+            <Textarea
+              defaultValue={brandDna.voice ?? ""}
+              onBlur={(e) => saveBrandDna(restaurantId, { voice: e.target.value })}
+            />
+          </Field>
+        </Card>
+      ) : (
+        <button
+          type="button"
+          className="mt-4 min-h-11 text-sm text-ink-soft underline-offset-2 hover:underline"
+          onClick={() => setEditing(true)}
         >
-          Approve Brand DNA
-        </Button>
-        <Button size="lg" variant="outline" onClick={() => router.push(`/app/${restaurantId}/brand/edit`)}>
-          Edit first
-        </Button>
-      </div>
+          Change a few words
+        </button>
+      )}
+      <WizardActions restaurantId={restaurantId} current="brand-dna" onContinue={approve} />
     </div>
   );
 }

@@ -12,11 +12,11 @@ export default function BrandPage() {
   if (!brandDna) {
     return (
       <EmptyState
-        title="No Brand DNA yet"
-        description="Finish onboarding and we’ll draft positioning, voice, colour, and photography rules for you to approve."
+        title="No brand profile yet"
+        description="Finish setup and we’ll draft how you sound, your colours, and photo style — for you to approve."
         action={
           <Button asChild>
-            <Link href={`/app/${restaurantId}/onboarding/basics`}>Start onboarding</Link>
+            <Link href={`/app/${restaurantId}`}>See what’s next</Link>
           </Button>
         }
       />
@@ -26,8 +26,8 @@ export default function BrandPage() {
     <div>
       <PageHeader
         eyebrow="Brand"
-        title="Brand board"
-        description="The source of truth. Everything we generate should feel like this — not a template."
+        title="Brand profile"
+        description="The look and voice we follow. Everything we make should feel like this."
         actions={
           <>
             <Badge tone={brandDna.status === "APPROVED" ? "green" : "gold"}>{brandDna.status.replace("_", " ")}</Badge>

@@ -66,7 +66,7 @@ Campaigns and social publishing are intentional “coming soon” stubs. Everyth
 
 TypeScript types in `src/lib/types.ts` (aligned with Prisma): positioning, audience, personality, voice, tagline, colours, typography, photographyDirection, videoDirection, graphicStyle, ctaStyle.
 
-Approve Brand DNA in onboarding (or on Little Lime) to generate the starter package linked from Home. Primary CTA on Home: **+ Create content**.
+Approve your **brand profile** in onboarding (or on Little Lime) to generate the starter kit linked from Home. Primary CTA: **Create content**. While setup is unfinished, Home is a “Next up” checklist and the full app nav stays hidden.
 
 ## Project layout
 

@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Button, Card, Progress } from "@/components/ui";
+import { Card, Progress } from "@/components/ui";
+import { CoachNote, ProgressList, WizardActions } from "@/components/onboarding";
 import { useAppStore } from "@/lib/mock/store";
 
 const BEATS = [
-  "Locking colour and type…",
-  "Drafting 12 social concepts…",
-  "Boarding 4 short films…",
-  "Laying out the mobile site…",
-  "Writing Google copy and a 30-day plan…",
+  "Picking colours and fonts",
+  "Writing 12 post ideas",
+  "Sketching 4 short videos",
+  "Building a simple phone website",
+  "Writing Google text and a month of posts",
 ];
 
 export default function OnboardingGeneratingPage() {
@@ -40,16 +41,14 @@ export default function OnboardingGeneratingPage() {
 
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Step 6</p>
-      <h1 className="mt-2 font-display text-4xl">Building your starter package</h1>
-      <Card className="mt-8 p-8">
-        <p className="font-display text-2xl">{BEATS[beat]}</p>
-        <Progress className="mt-6" value={progress} />
-        <p className="mt-3 text-xs text-ink-soft">Still a mock. Real providers plug in behind the same job interface.</p>
-        <Button className="mt-6" variant="outline" onClick={finish}>
-          Continue to kit
-        </Button>
+      <CoachNote>
+        Hang tight. We’re making a starter kit you can review — nothing is posted, and nothing is live on the web yet.
+      </CoachNote>
+      <Card className="mt-5 p-5 sm:p-6">
+        <Progress className="mb-6" value={progress} />
+        <ProgressList items={BEATS} active={beat} />
       </Card>
+      <WizardActions restaurantId={restaurantId} current="generating" onContinue={finish} />
     </div>
   );
 }

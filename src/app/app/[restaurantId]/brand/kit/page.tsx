@@ -25,7 +25,7 @@ export default function BrandKitPage() {
               <ColorSwatches colours={brandDna.colours} />
             </div>
           ) : (
-            <p className="mt-3 text-sm text-ink-soft">Approve Brand DNA to lock colour.</p>
+            <p className="mt-3 text-sm text-ink-soft">Approve your brand profile to lock colour.</p>
           )}
         </Card>
         <Card className="p-6">

@@ -21,9 +21,9 @@ export const buttonVariants = cva(
         gold: "bg-gold text-ink hover:bg-[#9a7836]",
       },
       size: {
-        sm: "h-8 px-3 text-xs",
-        md: "h-10 px-4",
-        lg: "h-12 px-6 text-base",
+        sm: "h-11 min-h-11 px-4 text-sm",
+        md: "h-12 min-h-12 px-5 text-sm",
+        lg: "h-12 min-h-12 px-6 text-base",
       },
     },
     defaultVariants: { variant: "primary", size: "md" },
@@ -79,7 +79,7 @@ export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElem
   return (
     <input
       className={cn(
-        "h-11 w-full rounded-xl border border-line bg-white px-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20",
+        "h-12 w-full rounded-xl border border-line bg-white px-3 text-base text-ink placeholder:text-ink-soft/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 sm:text-sm",
         className,
       )}
       {...props}
@@ -91,7 +91,7 @@ export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTex
   return (
     <textarea
       className={cn(
-        "min-h-28 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20",
+        "min-h-28 w-full rounded-xl border border-line bg-white px-3 py-3 text-base text-ink placeholder:text-ink-soft/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 sm:text-sm",
         className,
       )}
       {...props}
@@ -186,7 +186,7 @@ export function ComingSoon({
       <h2 className="mt-4 font-display text-3xl">{title}</h2>
       <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-soft">{description}</p>
       <p className="mt-6 text-xs uppercase tracking-wider text-ink-soft">
-        Phase 1 ships Brand DNA, starter package, website, and content. Live ads and posting come next.
+        Phase 1 is the brand kit, website, and posts. Ads and auto-posting come later.
       </p>
     </Card>
   );

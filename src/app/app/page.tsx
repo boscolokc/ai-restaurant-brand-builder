@@ -10,15 +10,15 @@ export default function RestaurantSwitcherPage() {
   const { snapshot } = useAppStore();
   return (
     <AccountChrome>
-      <div className="flex items-end justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">{snapshot.account.name}</p>
-          <h1 className="mt-2 font-display text-4xl">Your restaurants</h1>
+          <h1 className="mt-2 font-display text-3xl sm:text-4xl">Your restaurants</h1>
           <p className="mt-2 text-sm text-ink-soft">
-            Two kitchens are seeded. Add another anytime — multi-restaurant is the default, not an upgrade.
+            Pick a kitchen to continue. You can add another anytime.
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link href="/app/restaurants/new">
             <Plus className="h-4 w-4" />
             Add restaurant
@@ -39,12 +39,12 @@ export default function RestaurantSwitcherPage() {
                     </p>
                   </div>
                   <Badge tone={r.onboardingDone ? "green" : "gold"}>
-                    {r.onboardingDone ? "Live kit" : "Onboarding"}
+                    {r.onboardingDone ? "Ready" : "Keep going"}
                   </Badge>
                 </div>
-                <p className="mt-6 font-display text-xl italic">{dna?.tagline ?? "Brand DNA still cooking"}</p>
-                <p className="mt-4 text-xs uppercase tracking-wider text-ink-soft">
-                  {r.onboardingDone ? "Open home" : `Continue · ${r.onboardingStep.replace("_", " ")}`}
+                <p className="mt-6 font-display text-xl italic">{dna?.tagline ?? "Brand profile still cooking"}</p>
+                <p className="mt-4 text-sm text-ink-soft">
+                  {r.onboardingDone ? "Open home" : "Continue setup"}
                 </p>
               </Card>
             </Link>
