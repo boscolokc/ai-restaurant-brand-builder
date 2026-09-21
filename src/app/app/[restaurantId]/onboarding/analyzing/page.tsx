@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Card, Progress } from "@/components/ui";
+import { Button, Card, Progress } from "@/components/ui";
 import { useAppStore, useRestaurantBundle } from "@/lib/mock/store";
 import { brandIntelligence } from "@/lib/ai";
 
@@ -20,29 +20,29 @@ export default function OnboardingAnalyzingPage() {
   const { ensureDraftBrandDna, setOnboardingStep } = useAppStore();
   const [progress, setProgress] = useState(8);
   const [beat, setBeat] = useState(0);
-  const started = useRef(false);
+
+  function finish() {
+    ensureDraftBrandDna(restaurantId);
+    setOnboardingStep(restaurantId, "BRAND_DNA");
+    router.push(`/app/${restaurantId}/onboarding/brand-dna`);
+  }
 
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
     const timer = setInterval(() => {
       setProgress((p) => Math.min(100, p + 12));
       setBeat((b) => Math.min(BEATS.length - 1, b + 1));
     }, 420);
-    let alive = true;
-    (async () => {
-      await brandIntelligence.analyzeAssets([]);
-      await new Promise((r) => setTimeout(r, 2200));
-      if (!alive) return;
-      ensureDraftBrandDna(restaurantId);
-      setOnboardingStep(restaurantId, "BRAND_DNA");
-      router.push(`/app/${restaurantId}/onboarding/brand-dna`);
-    })();
+    const work = window.setTimeout(() => {
+      void brandIntelligence.analyzeAssets([]);
+      finish();
+    }, 2200);
     return () => {
-      alive = false;
       clearInterval(timer);
+      window.clearTimeout(work);
     };
-  }, [ensureDraftBrandDna, restaurantId, router, setOnboardingStep]);
+    // finish reads stable store actions; restaurantId is the only input that should restart.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restaurantId]);
 
   return (
     <div>
@@ -52,6 +52,9 @@ export default function OnboardingAnalyzingPage() {
         <p className="font-display text-2xl">{BEATS[beat]}</p>
         <Progress className="mt-6" value={progress} />
         <p className="mt-3 text-xs text-ink-soft">Mock AI adapter · no API keys · {assets.length} files</p>
+        <Button className="mt-6" variant="outline" onClick={finish}>
+          Skip wait
+        </Button>
       </Card>
     </div>
   );

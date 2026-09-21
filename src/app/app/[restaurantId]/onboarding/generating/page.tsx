@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Card, Progress } from "@/components/ui";
+import { Button, Card, Progress } from "@/components/ui";
 import { useAppStore } from "@/lib/mock/store";
 
 const BEATS = [
@@ -19,24 +19,24 @@ export default function OnboardingGeneratingPage() {
   const { unlockStarterPackage } = useAppStore();
   const [progress, setProgress] = useState(6);
   const [beat, setBeat] = useState(0);
-  const started = useRef(false);
+
+  function finish() {
+    unlockStarterPackage(restaurantId);
+    router.push(`/app/${restaurantId}/onboarding/done`);
+  }
 
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
     const timer = setInterval(() => {
       setProgress((p) => Math.min(100, p + 10));
       setBeat((b) => Math.min(BEATS.length - 1, b + 1));
     }, 380);
-    const done = setTimeout(() => {
-      unlockStarterPackage(restaurantId);
-      router.push(`/app/${restaurantId}/onboarding/done`);
-    }, 2600);
+    const done = window.setTimeout(finish, 2600);
     return () => {
       clearInterval(timer);
-      clearTimeout(done);
+      window.clearTimeout(done);
     };
-  }, [restaurantId, router, unlockStarterPackage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restaurantId]);
 
   return (
     <div>
@@ -46,6 +46,9 @@ export default function OnboardingGeneratingPage() {
         <p className="font-display text-2xl">{BEATS[beat]}</p>
         <Progress className="mt-6" value={progress} />
         <p className="mt-3 text-xs text-ink-soft">Still a mock. Real providers plug in behind the same job interface.</p>
+        <Button className="mt-6" variant="outline" onClick={finish}>
+          Continue to kit
+        </Button>
       </Card>
     </div>
   );
