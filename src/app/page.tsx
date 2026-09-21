@@ -43,7 +43,7 @@ export default function MarketingHome() {
                 <Link href="/pricing">See what’s included</Link>
               </Button>
             </div>
-            <p className="mt-4 text-xs text-ink-soft">Demo account · two restaurants · no API keys required.</p>
+            <p className="mt-4 text-xs text-ink-soft">Demo account · three restaurants · no API keys required.</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-3xl bg-[#1f4e5a] p-6 text-[#f4efe6] sm:row-span-2">

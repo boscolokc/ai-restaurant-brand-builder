@@ -27,7 +27,7 @@ export default function SettingsPage() {
           <Badge tone="gold">Billing stub</Badge>
           <h2 className="mt-3 font-display text-2xl">Plan</h2>
           <p className="mt-2 text-sm text-ink-soft">
-            Kitchen plan · two restaurants. Stripe is out of scope. Nothing will be charged.
+            Kitchen plan · multi-restaurant. Stripe is out of scope. Nothing will be charged.
           </p>
           <div className="mt-6 rounded-xl bg-paper-2 p-4 text-sm">
             Next invoice · never · $0
@@ -36,8 +36,8 @@ export default function SettingsPage() {
         <Card className="p-6 md:col-span-2">
           <h2 className="font-display text-2xl">Demo data</h2>
           <p className="mt-2 text-sm text-ink-soft">
-            Onboarding progress is saved in this browser. Reset to restore Harbor Table (complete) and Little Lime
-            (Brand DNA review).
+            Onboarding progress is saved in this browser. Reset to restore Harbor Table (complete), Little Lime
+            (Brand DNA review), and 见您一面 / Meet U 1 Face (approved DNA + calendar).
           </p>
           <Button className="mt-4" variant="outline" onClick={reset}>
             Reset demo data
