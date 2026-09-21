@@ -15,7 +15,7 @@ export default function RestaurantSwitcherPage() {
           <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">{snapshot.account.name}</p>
           <h1 className="mt-2 font-display text-4xl">Your restaurants</h1>
           <p className="mt-2 text-sm text-ink-soft">
-            Two kitchens are seeded. Add another anytime — multi-restaurant is the default, not an upgrade.
+            Three kitchens are seeded. Add another anytime — multi-restaurant is the default, not an upgrade.
           </p>
         </div>
         <Button asChild>

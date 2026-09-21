@@ -84,7 +84,9 @@ export default function RestaurantHomePage() {
                       {item.platform ?? item.kind} · {formatDate(item.scheduledFor)}
                     </p>
                   </div>
-                  <Badge tone="muted">{item.status.replace("_", " ")}</Badge>
+                  <Badge tone={item.status === "NEEDS_RELOCK" ? "accent" : "muted"}>
+                    {item.status.replaceAll("_", " ")}
+                  </Badge>
                 </li>
               ))
             )}

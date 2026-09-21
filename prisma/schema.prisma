@@ -1,18 +1,19 @@
 // Phase 1 data models for Hearth (AI Restaurant Brand Builder).
-// ORM choice: Prisma. Local demo uses SQLite so `npm install && npm run build`
-// works without a Postgres process. Swap `provider` + `url` to PostgreSQL
-// without changing the models. Runtime UI uses a typed in-memory/localStorage
-// mock store that mirrors this schema.
+// ORM: Prisma. Production lock is Prisma + PostgreSQL; local demo stays on
+// SQLite so `npm install && npm run build` works with no Postgres process.
+// Models are provider-agnostic — only the datasource block below changes.
+// Runtime UI uses a typed in-memory/localStorage mock store that mirrors this schema.
+// See README → "Switching to PostgreSQL".
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
+  // Local default: SQLite file. Do not point this at Postgres without also
+  // changing `provider` to "postgresql" (Prisma cannot swap providers via URL alone).
   provider = "sqlite"
-  // Local demo default. For PostgreSQL: provider = "postgresql" and
-  // url = env("DATABASE_URL") — see README.
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 enum MembershipRole {
@@ -87,7 +88,8 @@ enum ContentStatus {
   IN_REVIEW
   APPROVED
   SCHEDULED
-  PUBLISHED
+  PUBLISHED // Phase 1: UI only; no live publish
+  NEEDS_RELOCK // brandDnaId drifted from current APPROVED BrandDNA
   ARCHIVED
 }
 
@@ -189,7 +191,9 @@ model BrandDNA {
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
 
-  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurant Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  jobs       CreativeJob[]
+  content    ContentItem[]
 
   @@index([restaurantId, status])
   @@unique([restaurantId, version])
@@ -216,9 +220,12 @@ model Asset {
   @@index([restaurantId, kind])
 }
 
+/// Provider-independent async generation unit. Phase 1 jobs are mocks only —
+/// do not wire a real video/image provider here.
 model CreativeJob {
   id           String            @id @default(cuid())
   restaurantId String
+  brandDnaId   String? // required once Brand DNA is approved; review fails on drift
   type         CreativeJobType
   status       CreativeJobStatus @default(QUEUED)
   progress     Int               @default(0)
@@ -231,35 +238,40 @@ model CreativeJob {
   updatedAt    DateTime          @updatedAt
 
   restaurant Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  brandDna   BrandDNA?     @relation(fields: [brandDnaId], references: [id], onDelete: SetNull)
   content    ContentItem[]
 
   @@index([restaurantId, status])
   @@index([restaurantId, type])
+  @@index([brandDnaId])
 }
 
 model ContentItem {
   id           String        @id @default(cuid())
   restaurantId String
+  brandDnaId   String? // same SoT as CreativeJob; calendar/campaigns use this
   jobId        String?
   kind         ContentKind
   status       ContentStatus @default(DRAFT)
   title        String
-  body         String?
-  platform     String?
+  body         String? // caption / copy (ZH primary for calendar)
+  platform     String? // ig_feed | ig_stories | ig_reel | facebook | gbp | legacy ig/fb
   conceptIndex Int?
   scheduledFor DateTime?
-  payload      Json?
+  payload      Json? // calendar: dayIndex, dayOfWeek, isClosedDay, format, pillar, …
   thumbnailKey String?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
   restaurant Restaurant         @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  brandDna   BrandDNA?          @relation(fields: [brandDnaId], references: [id], onDelete: SetNull)
   job        CreativeJob?       @relation(fields: [jobId], references: [id], onDelete: SetNull)
   assets     ContentItemAsset[]
 
   @@index([restaurantId, status])
   @@index([restaurantId, scheduledFor])
   @@index([jobId])
+  @@index([brandDnaId])
 }
 
 model ContentItemAsset {

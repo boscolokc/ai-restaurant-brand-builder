@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Badge, Card, PageHeader } from "@/components/ui";
-import { useRestaurantBundle } from "@/lib/mock/store";
+import { contentStatusLabel, contentStatusTone, isCalendarPayload, useRestaurantBundle } from "@/lib/mock/store";
 import { formatDate } from "@/lib/utils";
 
 export default function ContentCalendarPage() {
@@ -34,11 +34,12 @@ export default function ContentCalendarPage() {
                   <div>
                     <p className="text-sm">{item.title}</p>
                     <p className="text-xs text-ink-soft">
-                      {formatDate(item.scheduledFor, { weekday: "short" })} · {item.kind.replace("_", " ").toLowerCase()} ·{" "}
+                      {formatDate(item.scheduledFor, { weekday: "short" })} · {item.kind.replaceAll("_", " ").toLowerCase()} ·{" "}
                       {item.platform ?? "all"}
+                      {isCalendarPayload(item.payload) ? ` · day ${item.payload.dayIndex}` : ""}
                     </p>
                   </div>
-                  <Badge tone={item.status === "APPROVED" ? "green" : "muted"}>{item.status.replace("_", " ")}</Badge>
+                  <Badge tone={contentStatusTone(item.status)}>{contentStatusLabel(item.status)}</Badge>
                 </Link>
               </li>
             ))}
@@ -52,7 +53,7 @@ export default function ContentCalendarPage() {
                 <Link href={`/app/${restaurantId}/content/${item.id}`} className="hover:underline">
                   {item.title}
                 </Link>
-                <p className="text-xs text-ink-soft">{item.kind.replace("_", " ").toLowerCase()}</p>
+                <p className="text-xs text-ink-soft">{item.kind.replaceAll("_", " ").toLowerCase()}</p>
               </li>
             ))}
           </ul>

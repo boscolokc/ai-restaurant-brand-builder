@@ -9,6 +9,11 @@ import {
   type ReactNode,
 } from "react";
 import { buildLimeStarterPackage, createSeedSnapshot, LIME_ID } from "@/lib/mock/seed";
+import {
+  applyBrandDnaRelock,
+  getApprovedBrandDna,
+  isCalendarPayload,
+} from "@/lib/brand-lock";
 import type {
   AppSnapshot,
   Asset,
@@ -22,7 +27,7 @@ import type {
 } from "@/lib/types";
 import { slugify, uid } from "@/lib/utils";
 
-const STORAGE_KEY = "hearth-demo-store-v1";
+const STORAGE_KEY = "hearth-demo-store-v2";
 
 type StoreContextValue = {
   hydrated: boolean;
@@ -51,6 +56,7 @@ type StoreContextValue = {
   ) => void;
   setWebsiteStatus: (restaurantId: string, status: "DRAFT" | "READY" | "PUBLISHED") => void;
   updateContentStatus: (itemId: string, status: ContentItem["status"]) => void;
+  relockContentToCurrentDna: (itemId: string) => void;
 };
 
 const StoreContext = createContext<StoreContextValue | null>(null);
@@ -101,8 +107,8 @@ function packageFor(s: AppSnapshot, restaurantId: string): StarterPackage {
   return {
     brandKitReady: Boolean(dna),
     websiteReady: Boolean(website),
-    socialKitReady: items.some((i) => i.kind === "SOCIAL_IMAGE"),
-    socialCreatives: items.filter((i) => i.kind === "SOCIAL_IMAGE").length,
+    socialKitReady: items.some((i) => i.kind === "SOCIAL_IMAGE" && !isCalendarPayload(i.payload)),
+    socialCreatives: items.filter((i) => i.kind === "SOCIAL_IMAGE" && !isCalendarPayload(i.payload)).length,
     videoConcepts: items.filter((i) => i.kind === "VIDEO_STORYBOARD").length,
     menuAssets: items.filter((i) => i.kind === "MENU_ASSET").length,
     googleBusiness: items.some((i) => i.kind === "GOOGLE_BUSINESS"),
@@ -242,6 +248,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
           dna.updatedAt = dna.approvedAt;
           r.onboardingStep = "GENERATING";
           r.updatedAt = dna.approvedAt;
+          applyBrandDnaRelock(d, restaurantId);
         }),
       unlockStarterPackage: (restaurantId) =>
         mutate((d) => {
@@ -262,13 +269,15 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
             } else {
               const t = new Date().toISOString();
               const dna = d.brandDnas.find((x) => x.restaurantId === restaurantId);
+              const brandDnaId = getApprovedBrandDna(d.brandDnas, restaurantId)?.id ?? dna?.id ?? null;
               d.jobs.push({
                 id: uid("job"),
                 restaurantId,
+                brandDnaId,
                 type: "STARTER_PACKAGE",
                 status: "SUCCEEDED",
                 progress: 100,
-                input: { brandDnaId: dna?.id },
+                input: { brandDnaId },
                 output: { package: "complete" },
                 error: null,
                 startedAt: t,
@@ -280,6 +289,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
                 d.contentItems.push({
                   id: uid("ci"),
                   restaurantId,
+                  brandDnaId,
                   jobId: null,
                   kind: "SOCIAL_IMAGE",
                   status: "IN_REVIEW",
@@ -303,6 +313,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
                 d.contentItems.push({
                   id: uid("ci"),
                   restaurantId,
+                  brandDnaId,
                   jobId: null,
                   kind: "VIDEO_STORYBOARD",
                   status: "IN_REVIEW",
@@ -349,6 +360,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
               d.contentItems.push({
                 id: uid("ci"),
                 restaurantId,
+                brandDnaId,
                 jobId: null,
                 kind: "MENU_ASSET",
                 status: "APPROVED",
@@ -365,6 +377,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
               d.contentItems.push({
                 id: uid("ci"),
                 restaurantId,
+                brandDnaId,
                 jobId: null,
                 kind: "GOOGLE_BUSINESS",
                 status: "APPROVED",
@@ -428,13 +441,16 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         }),
       startJob: (restaurantId, type, input) => {
         const t = new Date().toISOString();
+        const snap = memory ?? readClientSnapshot();
+        const brandDnaId = getApprovedBrandDna(snap.brandDnas, restaurantId)?.id ?? null;
         const job: CreativeJob = {
           id: uid("job"),
           restaurantId,
+          brandDnaId,
           type,
           status: "RUNNING",
           progress: 8,
-          input: input ?? null,
+          input: { ...(input ?? {}), brandDnaId },
           output: null,
           error: null,
           startedAt: t,
@@ -474,6 +490,16 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
           const item = d.contentItems.find((c) => c.id === itemId);
           if (!item) return;
           item.status = status;
+          item.updatedAt = new Date().toISOString();
+        }),
+      relockContentToCurrentDna: (itemId) =>
+        mutate((d) => {
+          const item = d.contentItems.find((c) => c.id === itemId);
+          if (!item) return;
+          const approved = getApprovedBrandDna(d.brandDnas, item.restaurantId);
+          if (!approved) return;
+          item.brandDnaId = approved.id;
+          item.status = item.status === "ARCHIVED" ? "ARCHIVED" : "IN_REVIEW";
           item.updatedAt = new Date().toISOString();
         }),
     };
@@ -520,5 +546,13 @@ export function getActiveBrandDna(dnas: BrandDNA[], restaurantId: string) {
 export function summarizePackage(s: AppSnapshot, restaurantId: string) {
   return packageFor(s, restaurantId);
 }
+
+export {
+  getApprovedBrandDna,
+  isBrandDnaStale,
+  isCalendarPayload,
+  contentStatusLabel,
+  contentStatusTone,
+} from "@/lib/brand-lock";
 
 export type { Asset };
