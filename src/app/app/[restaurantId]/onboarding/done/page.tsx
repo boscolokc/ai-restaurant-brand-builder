@@ -45,7 +45,7 @@ export default function OnboardingDonePage() {
         extra={
           <button
             type="button"
-            className="mb-3 w-full py-2 text-center text-sm text-ink-soft underline-offset-2 hover:underline sm:text-left"
+            className="mb-3 inline-flex min-h-11 w-full items-center justify-center py-2 text-center text-sm text-ink-soft underline-offset-2 hover:underline sm:justify-start sm:text-left"
             onClick={() => router.push(`/app/${restaurantId}`)}
           >
             See everything on Home

@@ -37,7 +37,7 @@ export default function OnboardingBusinessPage() {
         extra={
           <button
             type="button"
-            className="mb-3 w-full py-2 text-center text-sm text-ink-soft underline-offset-2 hover:underline sm:mb-0 sm:w-auto sm:text-left"
+            className="mb-3 inline-flex min-h-11 w-full items-center justify-center py-2 text-center text-sm text-ink-soft underline-offset-2 hover:underline sm:w-auto sm:justify-start sm:text-left"
             onClick={() => goNext(false)}
           >
             Skip for now
