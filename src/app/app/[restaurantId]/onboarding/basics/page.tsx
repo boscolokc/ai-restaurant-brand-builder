@@ -26,7 +26,7 @@ export default function OnboardingBasicsPage() {
 
   return (
     <div>
-      <Card className="space-y-4 p-5 sm:p-6">
+      <Card className="space-y-4 rounded-[2rem] border-0 bg-sand p-6 sm:p-8">
         <Field label="Restaurant name">
           <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="organization" />
         </Field>

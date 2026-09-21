@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { BrandBoard } from "@/components/brand-ui";
+import { BrandResults } from "@/components/brand-ui";
 import { Card, Field, Textarea } from "@/components/ui";
-import { CoachNote, WizardActions } from "@/components/onboarding";
+import { WizardActions } from "@/components/onboarding";
 import { useAppStore, useRestaurantBundle } from "@/lib/mock/store";
 
 export default function OnboardingBrandDnaPage() {
@@ -16,8 +16,9 @@ export default function OnboardingBrandDnaPage() {
 
   if (!brandDna) {
     return (
-      <Card className="p-6">
-        <p className="text-base">We don’t have a draft yet.</p>
+      <Card className="p-8">
+        <p className="font-display text-2xl">We don’t have a draft yet.</p>
+        <p className="mt-2 text-ink-soft">Give us a second and we’ll write a brand profile from what you shared.</p>
         <WizardActions
           restaurantId={restaurantId}
           current="brand-dna"
@@ -35,13 +36,7 @@ export default function OnboardingBrandDnaPage() {
 
   return (
     <div>
-      <CoachNote>
-        This is your brand profile for {restaurant?.name ?? "the restaurant"}. If a line feels off, change it. If it
-        feels right, continue — we’ll make posts and a simple site next.
-      </CoachNote>
-      <div className="mt-5">
-        <BrandBoard dna={brandDna} />
-      </div>
+      <BrandResults dna={brandDna} restaurant={restaurant} />
       {editing ? (
         <Card className="mt-5 space-y-4 p-5 sm:p-6">
           <Field label="Tagline">

@@ -4,15 +4,13 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FirstRunHome } from "@/components/first-run-home";
 import { StarterPackageGrid } from "@/components/package";
-import { Badge, Button, Card, PageHeader, Stat } from "@/components/ui";
-import { PhotoTile } from "@/components/media";
+import { Button } from "@/components/ui";
 import { useRestaurantBundle } from "@/lib/mock/store";
-import { formatDate } from "@/lib/utils";
-import { Plus } from "lucide-react";
+import { brandTypeName, firstSentence, inkOn } from "@/lib/brand-profile";
 
 export default function RestaurantHomePage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
-  const { restaurant, brandDna, assets, jobs, contentItems, starter } = useRestaurantBundle(restaurantId);
+  const { restaurant, brandDna, starter } = useRestaurantBundle(restaurantId);
   if (!restaurant || !starter) return null;
 
   const brandApproved = brandDna?.status === "APPROVED";
@@ -26,91 +24,50 @@ export default function RestaurantHomePage() {
         step={restaurant.onboardingStep}
         onboardingDone={restaurant.onboardingDone}
         brandApproved={Boolean(brandApproved)}
+        brandDna={brandDna}
       />
     );
   }
 
-  const upcoming = contentItems
-    .filter((c) => c.scheduledFor)
-    .sort((a, b) => (a.scheduledFor ?? "").localeCompare(b.scheduledFor ?? ""))
-    .slice(0, 5);
+  const typeName = brandDna ? brandTypeName(brandDna, restaurant) : restaurant.name;
+  const primary = brandDna?.colours?.primary ?? "#2f4a32";
+  const onPrimary = inkOn(primary);
 
   return (
-    <div>
-      <PageHeader
-        eyebrow={restaurant.cuisine ?? "Restaurant"}
-        title={`Welcome back, ${restaurant.name}`}
-        description={
-          brandDna?.tagline
-            ? `${brandDna.tagline} Your starter kit is ready to look at — nothing posts until you say so.`
-            : "Your starter kit is ready. Pick one post to review."
-        }
-        actions={
-          <Button asChild size="lg" className="w-full sm:w-auto">
-            <Link href={`/app/${restaurantId}/create`}>
-              <Plus className="h-4 w-4" />
-              Create content
-            </Link>
-          </Button>
-        }
-      />
+    <div className="-mx-4 -mt-8 sm:-mx-8 sm:-mt-8">
+      <section
+        className="relative overflow-hidden px-5 py-14 text-center sm:px-10 sm:py-20"
+        style={{ background: primary, color: onPrimary }}
+      >
+        <div className="pointer-events-none absolute -right-16 -top-10 h-48 w-48 rounded-full bg-white/10" />
+        <p className="text-sm font-medium tracking-[0.22em] uppercase opacity-80">{restaurant.name}</p>
+        <h1 className="mt-4 font-display text-5xl leading-[1.05] sm:text-6xl">{typeName}</h1>
+        {brandDna?.tagline ? (
+          <p className="mx-auto mt-4 max-w-lg font-display text-xl italic sm:text-2xl">{brandDna.tagline}</p>
+        ) : null}
+        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
+          {firstSentence(brandDna?.positioning) || "Your starter kit is ready. Pick one chapter — nothing posts until you say so."}
+        </p>
+        <Button asChild size="lg" variant="ink" className="mt-8 min-h-12 bg-white text-ink hover:bg-white/90">
+          <Link href={`/app/${restaurantId}/create`}>Create a post</Link>
+        </Button>
+      </section>
 
-      <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="Post ideas" value={starter.socialCreatives} />
-        <Stat label="Video ideas" value={starter.videoConcepts} />
-        <Stat label="Photos" value={starter.assetCount} />
-        <Stat label="Plan items" value={starter.calendarDays} />
-      </div>
-      <h2 className="mb-4 font-display text-2xl">Your starter kit</h2>
-      <StarterPackageGrid restaurantId={restaurantId} starter={starter} />
-
-      <div className="mt-10 grid gap-6 lg:grid-cols-3">
-        <Card className="p-5 lg:col-span-2">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="font-display text-xl">Coming up</h3>
-            <Link href={`/app/${restaurantId}/content`} className="min-h-11 text-sm text-ink-soft hover:text-ink">
-              Calendar
-            </Link>
-          </div>
-          <ul className="divide-y divide-line">
-            {upcoming.length === 0 ? (
-              <li className="py-6 text-sm text-ink-soft">No scheduled pieces yet.</li>
-            ) : (
-              upcoming.map((item) => (
-                <li key={item.id} className="flex items-center justify-between gap-3 py-3">
-                  <div>
-                    <p className="text-sm">{item.title}</p>
-                    <p className="text-xs text-ink-soft">
-                      {item.platform ?? item.kind} · {formatDate(item.scheduledFor)}
-                    </p>
-                  </div>
-                  <Badge tone="muted">{item.status.replace("_", " ")}</Badge>
-                </li>
-              ))
-            )}
-          </ul>
-        </Card>
-        <Card className="p-5">
-          <h3 className="font-display text-xl">Recent work</h3>
-          <ul className="mt-3 space-y-3">
-            {jobs.slice(0, 4).map((job) => (
-              <li key={job.id}>
-                <Link href={`/app/${restaurantId}/jobs/${job.id}`} className="text-sm hover:underline">
-                  {job.type.replaceAll("_", " ").toLowerCase()}
-                </Link>
-                <p className="text-xs text-ink-soft">
-                  {job.status.toLowerCase()} · {job.progress}%
-                </p>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-4 grid grid-cols-2 gap-2">
-            {assets.slice(0, 4).map((a) => (
-              <PhotoTile key={a.id} title={a.title} kind={a.kind} className="min-h-24" />
-            ))}
-          </div>
-        </Card>
-      </div>
+      <section className="px-4 py-12 sm:px-8 sm:py-16">
+        <p className="text-sm font-medium tracking-[0.18em] text-ink-soft uppercase">What’s next</p>
+        <h2 className="mt-2 font-display text-3xl sm:text-4xl">Open one chapter at a time</h2>
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-ink-soft">
+          Website, posts, videos, kit. Short blurbs — not a table of jobs.
+        </p>
+        <div className="mt-8">
+          <StarterPackageGrid restaurantId={restaurantId} starter={starter} />
+        </div>
+        <p className="mt-8 text-center">
+          <Link href={`/app/${restaurantId}/brand`} className="text-sm text-ink-soft underline-offset-4 hover:underline">
+            Re-read the full brand profile
+          </Link>
+        </p>
+      </section>
     </div>
   );
 }

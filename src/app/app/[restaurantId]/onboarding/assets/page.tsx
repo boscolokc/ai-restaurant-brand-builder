@@ -31,7 +31,7 @@ export default function OnboardingAssetsPage() {
 
   return (
     <div>
-      <Card className="p-5 sm:p-6">
+      <Card className="border-0 bg-sky p-6 sm:p-8">
         <p className="text-sm text-ink-soft">Tap to add sample photos. In the real product you’d upload from your phone.</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {SUGGESTIONS.map((title) => (

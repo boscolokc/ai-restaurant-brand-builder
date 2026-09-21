@@ -22,7 +22,7 @@ export default function OnboardingBusinessPage() {
 
   return (
     <div>
-      <Card className="space-y-4 p-5 sm:p-6">
+      <Card className="space-y-4 border-0 bg-sand p-6 sm:p-8">
         <Field label="Phone">
           <Input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" />
         </Field>

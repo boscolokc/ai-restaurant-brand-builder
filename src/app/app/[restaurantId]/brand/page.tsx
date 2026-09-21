@@ -2,18 +2,18 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { BrandBoard } from "@/components/brand-ui";
-import { Badge, Button, EmptyState, PageHeader } from "@/components/ui";
+import { BrandResults } from "@/components/brand-ui";
+import { Button, EmptyState } from "@/components/ui";
 import { useRestaurantBundle } from "@/lib/mock/store";
 
 export default function BrandPage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
-  const { brandDna } = useRestaurantBundle(restaurantId);
+  const { restaurant, brandDna } = useRestaurantBundle(restaurantId);
   if (!brandDna) {
     return (
       <EmptyState
         title="No brand profile yet"
-        description="Finish setup and we’ll draft how you sound, your colours, and photo style — for you to approve."
+        description="Finish the short quiz and we’ll write a results page — how you sound, colours, and photo style."
         action={
           <Button asChild>
             <Link href={`/app/${restaurantId}`}>See what’s next</Link>
@@ -23,27 +23,19 @@ export default function BrandPage() {
     );
   }
   return (
-    <div>
-      <PageHeader
-        eyebrow="Brand"
-        title="Brand profile"
-        description="The look and voice we follow. Everything we make should feel like this."
-        actions={
-          <>
-            <Badge tone={brandDna.status === "APPROVED" ? "green" : "gold"}>{brandDna.status.replace("_", " ")}</Badge>
-            <Button asChild variant="outline">
-              <Link href={`/app/${restaurantId}/brand/kit`}>Brand kit</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href={`/app/${restaurantId}/brand/guide`}>Guide</Link>
-            </Button>
-            <Button asChild>
-              <Link href={`/app/${restaurantId}/brand/edit`}>Edit</Link>
-            </Button>
-          </>
-        }
-      />
-      <BrandBoard dna={brandDna} />
+    <div className="-mx-4 -mt-8 sm:-mx-8 sm:-mt-8">
+      <BrandResults dna={brandDna} restaurant={restaurant} className="rounded-none" />
+      <div className="flex flex-wrap justify-center gap-3 px-4 py-10">
+        <Button asChild variant="outline">
+          <Link href={`/app/${restaurantId}/brand/kit`}>Brand kit</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href={`/app/${restaurantId}/brand/guide`}>Guide</Link>
+        </Button>
+        <Button asChild>
+          <Link href={`/app/${restaurantId}/brand/edit`}>Change a few words</Link>
+        </Button>
+      </div>
     </div>
   );
 }

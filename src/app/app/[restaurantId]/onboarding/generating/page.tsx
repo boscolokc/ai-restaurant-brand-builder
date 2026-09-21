@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Card, Progress } from "@/components/ui";
-import { CoachNote, ProgressList, WizardActions } from "@/components/onboarding";
+import { Progress } from "@/components/ui";
+import { ProgressList, WizardActions } from "@/components/onboarding";
 import { useAppStore } from "@/lib/mock/store";
 
 const BEATS = [
@@ -41,13 +41,15 @@ export default function OnboardingGeneratingPage() {
 
   return (
     <div>
-      <CoachNote>
-        Hang tight. We’re making a starter kit you can review — nothing is posted, and nothing is live on the web yet.
-      </CoachNote>
-      <Card className="mt-5 p-5 sm:p-6">
-        <Progress className="mb-6" value={progress} />
-        <ProgressList items={BEATS} active={beat} />
-      </Card>
+      <div className="rounded-[2rem] bg-peach px-5 py-8 sm:px-8 sm:py-10">
+        <p className="text-base leading-relaxed text-ink">
+          Hang tight. These are the chapters after your profile — nothing is posted, and nothing is live on the web yet.
+        </p>
+        <Progress className="mt-8 bg-white/70" value={progress} />
+        <div className="mt-6">
+          <ProgressList items={BEATS} active={beat} />
+        </div>
+      </div>
       <WizardActions restaurantId={restaurantId} current="generating" onContinue={finish} />
     </div>
   );

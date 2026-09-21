@@ -1,15 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f6f0e6;
-  --paper-2: #ece3d4;
+  --paper: #faf6ef;
+  --paper-2: #efe6d6;
   --ink: #1f1a16;
   --ink-soft: #6b6056;
-  --line: #ddd2c2;
+  --line: #e4d9c8;
   --accent: #c24e1d;
   --accent-2: #2f5d50;
   --gold: #b0893e;
   --white: #fffcf7;
+  --sage: #e4f0dc;
+  --peach: #fde6d4;
+  --lilac: #ece3f5;
+  --sky: #dceef4;
+  --sand: #f3ead8;
 }
 
 @theme inline {
@@ -22,6 +27,11 @@
   --color-accent-2: var(--accent-2);
   --color-gold: var(--gold);
   --color-white: var(--white);
+  --color-sage: var(--sage);
+  --color-peach: var(--peach);
+  --color-lilac: var(--lilac);
+  --color-sky: var(--sky);
+  --color-sand: var(--sand);
   --font-sans: var(--font-outfit);
   --font-display: var(--font-fraunces);
   --font-mono: var(--font-geist-mono);

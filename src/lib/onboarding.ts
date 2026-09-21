@@ -7,12 +7,12 @@ export const WIZARD_COPY: Record<
 > = {
   basics: {
     title: "What’s the restaurant called?",
-    helper: "Just the name, the food, and the city. We’ll write the rest.",
+    helper: "A few facts, like the start of a quiz. We’ll write the personality next.",
     continueLabel: "Continue",
   },
   assets: {
     title: "Add a few photos",
-    helper: "Phone pictures of food and the room are enough. We’ll use them to guess your look.",
+    helper: "Phone pictures of food and the room are enough. That’s the rest of the quiz.",
     continueLabel: "Continue",
   },
   business: {
@@ -21,23 +21,23 @@ export const WIZARD_COPY: Record<
     continueLabel: "Continue",
   },
   analyzing: {
-    title: "We’re looking at your photos",
-    helper: "This takes a few seconds. Sit tight — then you’ll check that it sounds like you.",
+    title: "Reading your answers",
+    helper: "This is the pause before results — like scoring a quiz.",
     continueLabel: "Continue",
   },
   "brand-dna": {
-    title: "Does this sound like you?",
-    helper: "Read the words and colours. Nothing is posted until you say it looks right.",
+    title: "Your brand profile",
+    helper: "A results page from your photos and answers. If it feels like you, keep going.",
     continueLabel: "Looks right — continue",
   },
   generating: {
-    title: "Putting your kit together",
-    helper: "Next you’ll see posts, a simple website, and a month of ideas — all for you to review.",
+    title: "Writing the next chapters",
+    helper: "Website, posts, and videos — you open them one at a time. Nothing goes live.",
     continueLabel: "Continue",
   },
   done: {
-    title: "You’re set",
-    helper: "Nothing goes live by itself. Next, pick one post to look at.",
+    title: "That’s your profile",
+    helper: "Pick one chapter to start. You can ignore the rest for now.",
     continueLabel: "Create a post",
   },
 };
@@ -70,8 +70,8 @@ export type OwnerMilestone = {
 export const OWNER_MILESTONES: OwnerMilestone[] = [
   { id: "basics", label: "Basics", helper: "Name, food, and city" },
   { id: "photos", label: "Photos", helper: "A few pictures of food and the room" },
-  { id: "profile", label: "Brand profile", helper: "Check the words and colours" },
-  { id: "package", label: "Generate package", helper: "Posts, a simple site, and a plan" },
+  { id: "profile", label: "Brand profile", helper: "Your results page" },
+  { id: "package", label: "Next chapters", helper: "Website, posts, and a simple plan" },
   { id: "create", label: "Create content", helper: "Pick one post. Nothing goes live yet." },
 ];
 
@@ -127,12 +127,12 @@ export function recommendedAction(
   const path = STEP_TO_PATH[step] ?? "basics";
   const copy = WIZARD_COPY[path];
   const labels: Partial<Record<OnboardingStep, string>> = {
-    BASICS: "Start with the name",
+    BASICS: "Start the quiz",
     ASSETS: "Add a few photos",
     BUSINESS: "Add hours (or skip)",
     ANALYZING: "See how it’s going",
-    BRAND_DNA: "Look over your brand profile",
-    GENERATING: "See your starter kit",
+    BRAND_DNA: "See your results",
+    GENERATING: "See what’s next",
     DONE: "Create a post",
   };
   return {

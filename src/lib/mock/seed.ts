@@ -81,6 +81,7 @@ const harborDna: BrandDNA = {
   graphicStyle: "Letterpress-inspired frames, generous margins, one thin accent rule.",
   ctaStyle: "Reserve a table / See tonight’s board — never “Shop now”.",
   rawAnalysis: {
+    typeName: "The Harbor Host",
     dominantColours: ["#1f4e5a", "#c4a574", "#d45d32"],
     dishes: ["steelhead", "sourdough", "oysters"],
   },
@@ -115,7 +116,7 @@ const limeDna: BrandDNA = {
   videoDirection: "Hands tearing herbs, coffee drip, patio light. Keep shots under 3 seconds.",
   graphicStyle: "Soft grids, lime-leaf motifs used sparingly, lots of rice-white space.",
   ctaStyle: "See today’s bowls / Grab a table — never “Order now” on the patio.",
-  rawAnalysis: { dishes: ["phở gà", "cà phê sữa đá", "gỏi cuốn"] },
+  rawAnalysis: { typeName: "The Quiet Heat", dishes: ["phở gà", "cà phê sữa đá", "gỏi cuốn"] },
   approvedAt: null,
   createdAt: "2026-09-12T15:00:00.000Z",
   updatedAt: now,

@@ -135,9 +135,10 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
   const setupIncomplete = !restaurant.onboardingDone;
 
   if (onboarding || setupIncomplete) {
+    const reveal = pathname.includes("/onboarding/brand-dna");
     return (
       <div className="flex h-dvh min-h-0 flex-col">
-        <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-line px-4 sm:h-16">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-3 px-4 sm:h-16">
           <Link href={`/app/${restaurantId}`} className="flex items-center gap-2 font-display text-lg tracking-tight sm:text-xl">
             <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-[15px] text-paper">H</span>
             Hearth
@@ -146,7 +147,12 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
             All kitchens
           </Link>
         </header>
-        <main className="mx-auto min-h-0 w-full max-w-xl flex-1 overflow-y-auto px-4 py-6 sm:max-w-2xl sm:py-10">
+        <main
+          className={cn(
+            "mx-auto min-h-0 w-full flex-1 overflow-y-auto px-4 py-6",
+            reveal ? "max-w-3xl sm:max-w-4xl sm:py-8" : "max-w-xl sm:max-w-2xl sm:py-10",
+          )}
+        >
           {children}
         </main>
       </div>

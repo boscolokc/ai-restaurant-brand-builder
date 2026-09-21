@@ -5,18 +5,21 @@ import { MarketingFooter, MarketingHeader } from "@/components/shell";
 const steps = [
   {
     n: "01",
-    title: "Show us the restaurant",
-    copy: "A few photos, the name, and how you cook. No brand questionnaire.",
+    title: "A short quiz",
+    copy: "Name, a few photos, optional hours. No brand questionnaire.",
+    tint: "bg-sage",
   },
   {
     n: "02",
-    title: "Check your brand profile",
-    copy: "Words, colours, and how photos should feel. You approve before we make posts.",
+    title: "A results page",
+    copy: "Your restaurant’s type, colours, and how you sound. You approve before we make posts.",
+    tint: "bg-peach",
   },
   {
     n: "03",
-    title: "Get a starter package",
-    copy: "Brand kit, mobile site, social kit, 12 posts, 4 video storyboards, menu assets, Google copy, and a 30-day plan.",
+    title: "Chapters to open",
+    copy: "Website, social, videos, kit. One at a time — nothing posts itself.",
+    tint: "bg-lilac",
   },
 ];
 
@@ -25,51 +28,44 @@ export default function MarketingHome() {
     <div className="flex min-h-full flex-col">
       <MarketingHeader />
       <main>
-        <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 lg:grid-cols-2 lg:items-center lg:py-24">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.22em] text-accent">For independent restaurants</p>
-            <h1 className="mt-4 font-display text-5xl leading-[1.05] sm:text-6xl">
-              Your AI restaurant branding & marketing team.
-            </h1>
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-soft">
-              Hearth turns food photos and a little context into a brand profile — then a starter kit. Not a
-              generic poster generator.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg">
-                <Link href="/signup">Open the demo kitchen</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/pricing">See what’s included</Link>
-              </Button>
-            </div>
-            <p className="mt-4 text-xs text-ink-soft">Demo account · two restaurants · no API keys required.</p>
+        <section className="mx-auto max-w-4xl px-4 py-16 text-center sm:py-24">
+          <p className="text-sm font-medium tracking-[0.22em] text-accent uppercase">For independent restaurants</p>
+          <h1 className="mt-4 font-display text-5xl leading-[1.05] sm:text-7xl">Find the restaurant’s type. Then make the work.</h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
+            Hearth is a short quiz, then a brand profile — like personality results, not a marketing dashboard. You
+            approve the page. We draft the kit.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button asChild size="lg">
+              <Link href="/signup">Try the demo</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link href="/pricing">See what’s included</Link>
+            </Button>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-3xl bg-[#1f4e5a] p-6 text-[#f4efe6] sm:row-span-2">
-              <p className="text-xs uppercase tracking-[0.2em] text-[#c4a574]">Harbor Table</p>
-              <p className="mt-8 font-display text-4xl">Come in from the weather.</p>
-              <p className="mt-6 text-sm text-white/70">Pacific coastal · Portland · brand profile approved</p>
+          <p className="mt-4 text-xs text-ink-soft">Demo account · two restaurants · no API keys required.</p>
+        </section>
+        <section className="px-4 pb-16">
+          <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2">
+            <div className="rounded-[2rem] bg-[#1f4e5a] p-8 text-[#f4efe6] md:min-h-80">
+              <p className="text-sm tracking-[0.2em] uppercase text-[#c4a574]">Harbor Table</p>
+              <p className="mt-6 font-display text-4xl sm:text-5xl">The Harbor Host</p>
+              <p className="mt-4 font-display text-2xl italic">Come in from the weather.</p>
             </div>
-            <div className="rounded-3xl bg-[#2f4a32] p-6 text-[#f7f4ec]">
-              <p className="text-xs uppercase tracking-[0.2em] text-[#c6d46a]">Little Lime</p>
-              <p className="mt-6 font-display text-2xl">Bright bowls. Quiet heat.</p>
-            </div>
-            <div className="rounded-3xl border border-line bg-white/60 p-6">
-              <p className="text-xs uppercase tracking-[0.2em] text-ink-soft">Starter package</p>
-              <p className="mt-3 text-sm leading-relaxed">
-                12 socials · 4 videos · site · menu · Google copy · 30-day calendar
-              </p>
+            <div className="rounded-[2rem] bg-[#2f4a32] p-8 text-[#f7f4ec] md:min-h-80">
+              <p className="text-sm tracking-[0.2em] uppercase text-[#c6d46a]">Little Lime</p>
+              <p className="mt-6 font-display text-4xl sm:text-5xl">The Quiet Heat</p>
+              <p className="mt-4 font-display text-2xl italic">Bright bowls. Quiet heat.</p>
             </div>
           </div>
         </section>
-        <section className="border-y border-line bg-white/40">
-          <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 md:grid-cols-3">
+        <section className="px-4 pb-20">
+          <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-3">
             {steps.map((s) => (
-              <div key={s.n}>
-                <p className="font-display text-3xl text-gold">{s.n}</p>
-                <h2 className="mt-2 font-display text-2xl">{s.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">{s.copy}</p>
+              <div key={s.n} className={`rounded-[2rem] p-7 ${s.tint}`}>
+                <p className="font-display text-3xl text-ink-soft">{s.n}</p>
+                <h2 className="mt-3 font-display text-2xl">{s.title}</h2>
+                <p className="mt-2 text-base leading-relaxed text-ink">{s.copy}</p>
               </div>
             ))}
           </div>

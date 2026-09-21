@@ -1,28 +1,45 @@
 import Link from "next/link";
-import { Badge, Card } from "@/components/ui";
 import type { StarterPackage } from "@/lib/types";
-import {
-  CalendarDays,
-  Clapperboard,
-  Globe,
-  Images,
-  LayoutTemplate,
-  MapPin,
-  Palette,
-  Share2,
-  UtensilsCrossed,
-} from "lucide-react";
+import { Clapperboard, Globe, Palette, Share2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const ITEMS = [
-  { key: "brandKitReady", label: "Brand kit", href: "brand/kit", icon: Palette, copy: "Colours, type, and rules" },
-  { key: "websiteReady", label: "Mobile website", href: "website", icon: Globe, copy: "Section-based site" },
-  { key: "socialKitReady", label: "Social kit", href: "social", icon: Share2, copy: "Profile covers & posts" },
-  { key: "socialCreatives", label: "12 post ideas", href: "create/social", icon: LayoutTemplate, copy: "Review before posting" },
-  { key: "videoConcepts", label: "4 video ideas", href: "create/video", icon: Clapperboard, copy: "Shot lists to review" },
-  { key: "menuAssets", label: "Digital menu", href: "content", icon: UtensilsCrossed, copy: "Print + mobile" },
-  { key: "googleBusiness", label: "Google Business copy", href: "content", icon: MapPin, copy: "Ready to paste" },
-  { key: "calendarDays", label: "30-day content plan", href: "content", icon: CalendarDays, copy: "On the calendar" },
-  { key: "assetCount", label: "Asset library", href: "assets", icon: Images, copy: "Uploads + generated" },
+const CHAPTERS = [
+  {
+    key: "websiteReady",
+    title: "Your website",
+    blurb: "A simple phone site in your colours. Guests can read the story and find you.",
+    href: "website",
+    icon: Globe,
+    tint: "bg-sage",
+    cta: "Start",
+  },
+  {
+    key: "socialCreatives",
+    title: "Social posts",
+    blurb: "Twelve ideas written in your voice. Approve the ones that feel like you.",
+    href: "create/social",
+    icon: Share2,
+    tint: "bg-peach",
+    cta: "Start",
+  },
+  {
+    key: "videoConcepts",
+    title: "Short videos",
+    blurb: "Four shot lists. No rendering yet — you pick the story first.",
+    href: "create/video",
+    icon: Clapperboard,
+    tint: "bg-lilac",
+    cta: "Start",
+  },
+  {
+    key: "brandKitReady",
+    title: "Brand kit",
+    blurb: "Colours, type, and how to shoot. Hand this to anyone who makes a graphic.",
+    href: "brand/kit",
+    icon: Palette,
+    tint: "bg-sky",
+    cta: "Open kit",
+  },
 ] as const;
 
 export function StarterPackageGrid({
@@ -33,26 +50,26 @@ export function StarterPackageGrid({
   starter: StarterPackage;
 }) {
   return (
-    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-      {ITEMS.map((item) => {
+    <div className="grid gap-4 sm:grid-cols-2">
+      {CHAPTERS.map((item) => {
         const Icon = item.icon;
         const value = starter[item.key];
         const ready = typeof value === "boolean" ? value : Number(value) > 0;
         return (
-          <Link key={item.key} href={`/app/${restaurantId}/${item.href}`}>
-            <Card className="h-full p-5 transition hover:-translate-y-0.5 hover:border-ink/20">
-              <div className="flex items-start justify-between">
-                <div className="grid h-10 w-10 place-items-center rounded-xl bg-paper-2">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <Badge tone={ready ? "green" : "muted"}>{ready ? "Ready" : "Waiting"}</Badge>
-              </div>
-              <h3 className="mt-4 font-display text-xl">{item.label}</h3>
-              <p className="mt-1 text-sm text-ink-soft">
-                {item.copy}
-                {typeof value === "number" ? ` · ${value}` : ""}
-              </p>
-            </Card>
+          <Link
+            key={item.key}
+            href={`/app/${restaurantId}/${item.href}`}
+            className={cn(
+              "flex min-h-52 flex-col rounded-[2rem] p-7 transition hover:-translate-y-0.5",
+              item.tint,
+            )}
+          >
+            <Icon className="h-7 w-7 text-ink-soft" />
+            <h3 className="mt-5 font-display text-3xl leading-tight">{item.title}</h3>
+            <p className="mt-3 flex-1 text-base leading-relaxed text-ink">{item.blurb}</p>
+            <span className="mt-6 inline-flex min-h-11 w-fit items-center rounded-full bg-ink px-5 text-sm text-paper">
+              {ready ? item.cta : "Waiting"}
+            </span>
           </Link>
         );
       })}

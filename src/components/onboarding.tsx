@@ -8,15 +8,18 @@ import { cn } from "@/lib/utils";
 import { ONBOARDING_PATHS, type OnboardingPath } from "@/lib/utils";
 import { prevPath, stepNumber, WIZARD_COPY } from "@/lib/onboarding";
 
+const REVEAL_STEPS = new Set<OnboardingPath>(["brand-dna", "done"]);
+
 export function OnboardingStepper({ current }: { current: string }) {
   const path = (ONBOARDING_PATHS.includes(current as OnboardingPath) ? current : "basics") as OnboardingPath;
   const n = stepNumber(path);
   const total = ONBOARDING_PATHS.length;
   const copy = WIZARD_COPY[path];
   const pct = (n / total) * 100;
+  const compact = REVEAL_STEPS.has(path);
 
   return (
-    <div className="mb-6 sm:mb-8">
+    <div className={cn(compact ? "mb-4" : "mb-6 sm:mb-8")}>
       <p className="text-sm font-medium text-ink-soft">
         Step {n} of {total}
       </p>
@@ -27,15 +30,16 @@ export function OnboardingStepper({ current }: { current: string }) {
         {ONBOARDING_PATHS.map((step, i) => (
           <li
             key={step}
-            className={cn(
-              "h-1.5 flex-1 rounded-full",
-              i < n ? "bg-accent" : "bg-paper-2",
-            )}
+            className={cn("h-1.5 flex-1 rounded-full", i < n ? "bg-accent" : "bg-paper-2")}
           />
         ))}
       </ol>
-      <h1 className="mt-5 font-display text-3xl leading-tight text-ink sm:text-4xl">{copy.title}</h1>
-      <p className="mt-2 max-w-xl text-base leading-relaxed text-ink-soft">{copy.helper}</p>
+      {compact ? null : (
+        <>
+          <h1 className="mt-6 font-display text-3xl leading-tight text-ink sm:text-5xl">{copy.title}</h1>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">{copy.helper}</p>
+        </>
+      )}
     </div>
   );
 }
@@ -88,7 +92,7 @@ export function WizardActions({
 
 export function CoachNote({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded-2xl bg-paper-2 px-4 py-3 text-sm leading-relaxed text-ink">{children}</p>
+    <p className="rounded-3xl bg-sand px-5 py-4 text-base leading-relaxed text-ink">{children}</p>
   );
 }
 
@@ -102,7 +106,7 @@ export function ProgressList({ items, active }: { items: string[]; active: numbe
           <li key={item} className="flex items-start gap-3">
             <span
               className={cn(
-                "mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-medium",
+                "mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-medium",
                 done && "bg-accent-2 text-white",
                 current && "bg-accent text-white",
                 !done && !current && "border border-line text-ink-soft",
@@ -110,7 +114,7 @@ export function ProgressList({ items, active }: { items: string[]; active: numbe
             >
               {done ? <Check className="h-4 w-4" /> : i + 1}
             </span>
-            <span className={cn("pt-0.5 text-base", current ? "text-ink" : "text-ink-soft")}>{item}</span>
+            <span className={cn("pt-1 text-base", current ? "text-ink" : "text-ink-soft")}>{item}</span>
           </li>
         );
       })}

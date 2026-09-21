@@ -45,7 +45,7 @@ export function Button({
 export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("rounded-2xl border border-line bg-white/70 shadow-[0_1px_0_rgba(31,26,22,0.04)]", className)}
+      className={cn("rounded-3xl border border-line bg-white/80 shadow-[0_1px_0_rgba(31,26,22,0.04)]", className)}
       {...props}
     />
   );
@@ -146,8 +146,8 @@ export function PageHeader({
         {eyebrow ? (
           <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-ink-soft">{eyebrow}</p>
         ) : null}
-        <h1 className="font-display text-3xl text-ink sm:text-4xl">{title}</h1>
-        {description ? <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">{description}</p> : null}
+        <h1 className="font-display text-3xl text-ink sm:text-5xl">{title}</h1>
+        {description ? <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-soft">{description}</p> : null}
       </div>
       {actions ? <div className="flex shrink-0 flex-wrap gap-2">{actions}</div> : null}
     </div>

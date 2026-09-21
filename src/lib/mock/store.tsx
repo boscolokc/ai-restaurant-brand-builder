@@ -161,7 +161,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
             videoDirection: "Hold on the plate. Room tone. No jump cuts on garnishes.",
             graphicStyle: "Generous margins, one accent rule.",
             ctaStyle: "Reserve a table — never Shop now.",
-            rawAnalysis: { mock: true },
+            rawAnalysis: { mock: true, typeName: `The ${r.city ?? "Neighborhood"} Table` },
             approvedAt: null,
             createdAt: t,
             updatedAt: t,

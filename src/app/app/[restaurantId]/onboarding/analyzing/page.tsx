@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Card, Progress } from "@/components/ui";
-import { CoachNote, ProgressList, WizardActions } from "@/components/onboarding";
+import { Progress } from "@/components/ui";
+import { ProgressList, WizardActions } from "@/components/onboarding";
 import { useAppStore, useRestaurantBundle } from "@/lib/mock/store";
 import { brandIntelligence } from "@/lib/ai";
 
 const BEATS = [
   "Looking at the light and plates",
   "Noticing the room, not just the food",
-  "Drafting words and colours for you to check",
+  "Drafting a brand profile for you to check",
 ];
 
 export default function OnboardingAnalyzingPage() {
@@ -45,14 +45,16 @@ export default function OnboardingAnalyzingPage() {
 
   return (
     <div>
-      <CoachNote>
-        You don’t need to do anything. Next we’ll show a brand profile — words and colours — and you decide if it feels
-        like {assets.length ? "your photos" : "your restaurant"}.
-      </CoachNote>
-      <Card className="mt-5 p-5 sm:p-6">
-        <Progress className="mb-6" value={progress} />
-        <ProgressList items={BEATS} active={beat} />
-      </Card>
+      <div className="rounded-[2rem] bg-lilac px-5 py-8 sm:px-8 sm:py-10">
+        <p className="text-base leading-relaxed text-ink">
+          You don’t need to do anything. Next is a results page — words and colours — and you decide if it feels like{" "}
+          {assets.length ? "your photos" : "your restaurant"}.
+        </p>
+        <Progress className="mt-8 bg-white/70" value={progress} />
+        <div className="mt-6">
+          <ProgressList items={BEATS} active={beat} />
+        </div>
+      </div>
       <WizardActions restaurantId={restaurantId} current="analyzing" onContinue={finish} />
     </div>
   );
