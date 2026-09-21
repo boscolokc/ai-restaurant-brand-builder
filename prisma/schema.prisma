@@ -1,0 +1,302 @@
+// Phase 1 data models for Hearth (AI Restaurant Brand Builder).
+// ORM choice: Prisma. Local demo uses SQLite so `npm install && npm run build`
+// works without a Postgres process. Swap `provider` + `url` to PostgreSQL
+// without changing the models. Runtime UI uses a typed in-memory/localStorage
+// mock store that mirrors this schema.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  // Local demo default. For PostgreSQL: provider = "postgresql" and
+  // url = env("DATABASE_URL") — see README.
+  url      = "file:./dev.db"
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum OnboardingStep {
+  BASICS
+  ASSETS
+  BUSINESS
+  ANALYZING
+  BRAND_DNA
+  GENERATING
+  DONE
+}
+
+enum BrandDnaStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  SUPERSEDED
+}
+
+enum AssetKind {
+  FOOD_PHOTO
+  INTERIOR
+  EXTERIOR
+  LOGO
+  MENU
+  OTHER
+}
+
+enum AssetSource {
+  UPLOAD
+  GENERATED
+  IMPORTED
+}
+
+enum CreativeJobType {
+  IMAGE_ANALYSIS
+  BRAND_DNA
+  STARTER_PACKAGE
+  SOCIAL_CONCEPTS
+  VIDEO_CONCEPTS
+  WEBSITE
+  CALENDAR
+  SINGLE_CREATIVE
+}
+
+enum CreativeJobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum ContentKind {
+  SOCIAL_IMAGE
+  SOCIAL_CAROUSEL
+  VIDEO_STORYBOARD
+  MENU_ASSET
+  GOOGLE_BUSINESS
+  CAPTION
+  OTHER
+}
+
+enum ContentStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum WebsiteStatus {
+  DRAFT
+  READY
+  PUBLISHED
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  DONE
+}
+
+model Account {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       AccountMembership[]
+  restaurants Restaurant[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships AccountMembership[]
+}
+
+model AccountMembership {
+  id        String         @id @default(cuid())
+  accountId String
+  userId    String
+  role      MembershipRole @default(OWNER)
+  createdAt DateTime       @default(now())
+
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, userId])
+  @@index([userId])
+}
+
+model Restaurant {
+  id             String         @id @default(cuid())
+  accountId      String
+  name           String
+  slug           String         @unique
+  cuisine        String?
+  city           String?
+  country        String?
+  phone          String?
+  websiteUrl     String?
+  description    String?
+  onboardingStep OnboardingStep @default(BASICS)
+  onboardingDone Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  account   Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  brandDna  BrandDNA[]
+  assets    Asset[]
+  jobs      CreativeJob[]
+  content   ContentItem[]
+  website   Website?
+  campaigns Campaign[]
+
+  @@index([accountId])
+}
+
+/// Approved Brand DNA is the source of truth for generation.
+/// Keep history via SUPERSEDED rows; one APPROVED (or latest PENDING) active.
+model BrandDNA {
+  id                   String         @id @default(cuid())
+  restaurantId         String
+  status               BrandDnaStatus @default(DRAFT)
+  version              Int            @default(1)
+  positioning          String?
+  audience             String?
+  personality          String?
+  voice                String?
+  tagline              String?
+  colours              Json?
+  typography           Json?
+  photographyDirection String?
+  videoDirection       String?
+  graphicStyle         String?
+  ctaStyle             String?
+  rawAnalysis          Json?
+  approvedAt           DateTime?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@index([restaurantId, status])
+  @@unique([restaurantId, version])
+}
+
+model Asset {
+  id           String      @id @default(cuid())
+  restaurantId String
+  kind         AssetKind   @default(OTHER)
+  source       AssetSource @default(UPLOAD)
+  title        String?
+  storageKey   String
+  mimeType     String?
+  byteSize     Int?
+  width        Int?
+  height       Int?
+  analysis     Json?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  restaurant   Restaurant         @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  contentLinks ContentItemAsset[]
+
+  @@index([restaurantId, kind])
+}
+
+model CreativeJob {
+  id           String            @id @default(cuid())
+  restaurantId String
+  type         CreativeJobType
+  status       CreativeJobStatus @default(QUEUED)
+  progress     Int               @default(0)
+  input        Json?
+  output       Json?
+  error        String?
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  restaurant Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  content    ContentItem[]
+
+  @@index([restaurantId, status])
+  @@index([restaurantId, type])
+}
+
+model ContentItem {
+  id           String        @id @default(cuid())
+  restaurantId String
+  jobId        String?
+  kind         ContentKind
+  status       ContentStatus @default(DRAFT)
+  title        String
+  body         String?
+  platform     String?
+  conceptIndex Int?
+  scheduledFor DateTime?
+  payload      Json?
+  thumbnailKey String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  restaurant Restaurant         @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  job        CreativeJob?       @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  assets     ContentItemAsset[]
+
+  @@index([restaurantId, status])
+  @@index([restaurantId, scheduledFor])
+  @@index([jobId])
+}
+
+model ContentItemAsset {
+  contentItemId String
+  assetId       String
+
+  contentItem ContentItem @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+  asset       Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@id([contentItemId, assetId])
+}
+
+model Website {
+  id           String        @id @default(cuid())
+  restaurantId String        @unique
+  status       WebsiteStatus @default(DRAFT)
+  theme        Json?
+  sections     Json
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+model Campaign {
+  id           String         @id @default(cuid())
+  restaurantId String
+  name         String
+  status       CampaignStatus @default(DRAFT)
+  startDate    DateTime?
+  endDate      DateTime?
+  brief        String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@index([restaurantId])
+}
