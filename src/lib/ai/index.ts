@@ -30,6 +30,7 @@ export type StarterPackageDraft = {
 /**
  * Provider-independent AI layer. Swap `mockBrandIntelligence` for a real
  * adapter (OpenAI, Anthropic, Gemini, etc.) without touching UI code.
+ * Phase 1 stays mocks only — no Higgsfield or other video render provider.
  */
 export interface BrandIntelligence {
   analyzeAssets(assets: Asset[]): Promise<ImageAnalysis>;

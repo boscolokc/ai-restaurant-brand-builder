@@ -28,6 +28,10 @@ export default function JobDetailPage() {
         </div>
         <Progress className="mt-4" value={job.progress} />
         <dl className="mt-6 grid gap-2 text-sm">
+          <div className="flex justify-between gap-4">
+            <dt className="text-ink-soft">Brand DNA</dt>
+            <dd className="truncate">{job.brandDnaId ?? "—"}</dd>
+          </div>
           <div className="flex justify-between">
             <dt className="text-ink-soft">Started</dt>
             <dd>{formatDateTime(job.startedAt)}</dd>
