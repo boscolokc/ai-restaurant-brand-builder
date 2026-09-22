@@ -82,7 +82,7 @@ export function RestaurantSwitcher({ currentId }: { currentId?: string }) {
       </label>
       <select
         id="restaurant-switcher"
-        className="h-9 max-w-[10.5rem] truncate rounded-md border border-line bg-white px-2 text-sm sm:max-w-[16rem]"
+        className="h-9 w-full min-w-0 max-w-[9rem] truncate rounded-md border border-line bg-white px-2 text-sm sm:max-w-[16rem]"
         value={currentId ?? "switch"}
         onChange={(e) => {
           const id = e.target.value;
@@ -187,21 +187,28 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-line bg-white px-4">
-          <button className="rounded-md p-1.5 text-ink hover:bg-paper-2 lg:hidden" onClick={() => setOpen((v) => !v)} aria-label="Open menu">
+          <button
+            type="button"
+            className="rounded-md p-1.5 text-ink hover:bg-paper-2 lg:hidden"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label="Open menu"
+          >
             <Menu className="h-5 w-5" />
           </button>
           <div className="hidden text-sm text-ink-soft lg:block">
             {restaurant.city ? `${restaurant.cuisine} · ${restaurant.city}` : restaurant.cuisine}
           </div>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex min-w-0 items-center gap-2">
             <RestaurantSwitcher currentId={restaurantId} />
-            <Button size="sm" asChild>
+            <Button size="sm" className="shrink-0" asChild>
               <Link href={`${base}/create`}>
                 <Plus className="h-4 w-4" />
-                Create content
+                <span className="hidden sm:inline">Create content</span>
+                <span className="sm:hidden">Create</span>
               </Link>
             </Button>
-            <form action="/api/auth/logout" method="post">
+            <form action="/api/auth/logout" method="post" className="hidden shrink-0 sm:block">
               <Button variant="ghost" size="sm" type="submit" aria-label="Log out">
                 <LogOut className="h-4 w-4" />
               </Button>
@@ -220,6 +227,14 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
                 {item.label}
               </Link>
             ))}
+            <Link href="/app/settings" className="rounded-md border border-line px-2.5 py-1 text-sm text-ink" onClick={() => setOpen(false)}>
+              Settings
+            </Link>
+            <form action="/api/auth/logout" method="post">
+              <button type="submit" className="rounded-md border border-line px-2.5 py-1 text-sm text-ink">
+                Log out
+              </button>
+            </form>
           </nav>
         ) : null}
         <main className="flex-1 px-4 py-8 sm:px-8">{children}</main>
