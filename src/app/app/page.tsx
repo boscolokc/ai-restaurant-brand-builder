@@ -12,8 +12,8 @@ export default function RestaurantSwitcherPage() {
     <AccountChrome>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">{snapshot.account.name}</p>
-          <h1 className="mt-2 font-display text-4xl">Your restaurants</h1>
+          <p className="text-sm text-ink-soft">{snapshot.account.name}</p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight">Your restaurants</h1>
           <p className="mt-2 text-sm text-ink-soft">
             Three kitchens are seeded. Add another anytime — multi-restaurant is the default, not an upgrade.
           </p>
@@ -30,10 +30,10 @@ export default function RestaurantSwitcherPage() {
           const dna = snapshot.brandDnas.find((d) => d.restaurantId === r.id && d.status !== "SUPERSEDED");
           return (
             <Link key={r.id} href={`/app/${r.id}`}>
-              <Card className="h-full p-6 transition hover:-translate-y-0.5 hover:border-ink/20">
-                <div className="flex items-start justify-between">
+              <Card className="h-full p-5 transition hover:border-ink/15">
+                <div className="flex items-start justify-between gap-3">
                   <div>
-                    <h2 className="font-display text-2xl">{r.name}</h2>
+                    <h2 className="text-lg font-semibold tracking-tight">{r.name}</h2>
                     <p className="mt-1 text-sm text-ink-soft">
                       {[r.cuisine, r.city].filter(Boolean).join(" · ")}
                     </p>
@@ -42,7 +42,7 @@ export default function RestaurantSwitcherPage() {
                     {r.onboardingDone ? "Live kit" : "Onboarding"}
                   </Badge>
                 </div>
-                <p className="mt-6 font-display text-xl italic">{dna?.tagline ?? "Brand DNA still cooking"}</p>
+                <p className="mt-4 text-sm text-ink">{dna?.tagline ?? "Brand DNA still in review"}</p>
                 <p className="mt-4 text-xs uppercase tracking-wider text-ink-soft">
                   {r.onboardingDone ? "Open home" : `Continue · ${r.onboardingStep.replace("_", " ")}`}
                 </p>

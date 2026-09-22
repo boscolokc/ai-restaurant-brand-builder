@@ -33,7 +33,7 @@ export default function PublicRestaurantPage() {
   return (
     <div className="min-h-full" style={{ background: theme?.background ?? "#f4efe6", color: theme?.primary ?? "#1f1a16" }}>
       <MarketingHeader />
-      <div className="mx-auto max-w-3xl px-4 py-12">
+      <div className="brand-type mx-auto max-w-3xl px-4 py-12">
         <div className="flex items-center gap-2">
           <Badge>Guest view</Badge>
           {website?.status === "PUBLISHED" ? <Badge tone="green">Published</Badge> : <Badge tone="gold">Preview</Badge>}
@@ -59,7 +59,7 @@ export default function PublicRestaurantPage() {
         {assets.length > 0 ? (
           <div className="mt-16 grid grid-cols-2 gap-3">
             {assets.map((a) => (
-              <PhotoTile key={a.id} title={a.title} kind={a.kind} />
+              <PhotoTile key={a.id} title={a.title} kind={a.kind} expressive />
             ))}
           </div>
         ) : null}

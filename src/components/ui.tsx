@@ -10,15 +10,15 @@ import type {
 } from "react";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        primary: "bg-accent text-white hover:bg-[#a84318]",
-        ink: "bg-ink text-paper hover:bg-ink/90",
-        outline: "border border-line bg-transparent text-ink hover:bg-paper-2",
+        primary: "bg-accent text-white hover:bg-accent-press",
+        ink: "bg-ink text-white hover:bg-ink/90",
+        outline: "border border-line bg-white text-ink hover:bg-paper-2",
         ghost: "text-ink-soft hover:bg-paper-2 hover:text-ink",
-        gold: "bg-gold text-ink hover:bg-[#9a7836]",
+        gold: "border border-line bg-white text-ink hover:bg-paper-2",
       },
       size: {
         sm: "h-8 px-3 text-xs",
@@ -45,7 +45,7 @@ export function Button({
 export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("rounded-2xl border border-line bg-white/70 shadow-[0_1px_0_rgba(31,26,22,0.04)]", className)}
+      className={cn("rounded-lg border border-line bg-white", className)}
       {...props}
     />
   );
@@ -66,7 +66,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide",
+        "inline-flex items-center rounded-md border border-transparent px-2 py-0.5 text-xs font-medium",
         tones[tone],
         className,
       )}
@@ -79,7 +79,7 @@ export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElem
   return (
     <input
       className={cn(
-        "h-11 w-full rounded-xl border border-line bg-white px-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20",
+        "h-10 w-full rounded-md border border-line bg-white px-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10",
         className,
       )}
       {...props}
@@ -91,7 +91,7 @@ export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTex
   return (
     <textarea
       className={cn(
-        "min-h-28 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20",
+        "min-h-28 w-full rounded-md border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10",
         className,
       )}
       {...props}
@@ -100,7 +100,7 @@ export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTex
 }
 
 export function Label({ className, ...props }: HTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn("mb-1.5 block text-xs font-medium uppercase tracking-wider text-ink-soft", className)} {...props} />;
+  return <label className={cn("mb-1.5 block text-sm font-medium text-ink", className)} {...props} />;
 }
 
 export function Field({
@@ -144,9 +144,9 @@ export function PageHeader({
     <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
         {eyebrow ? (
-          <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-ink-soft">{eyebrow}</p>
+          <p className="mb-1 text-xs font-medium text-ink-soft">{eyebrow}</p>
         ) : null}
-        <h1 className="font-display text-3xl text-ink sm:text-4xl">{title}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">{title}</h1>
         {description ? <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">{description}</p> : null}
       </div>
       {actions ? <div className="flex shrink-0 flex-wrap gap-2">{actions}</div> : null}
@@ -165,7 +165,7 @@ export function EmptyState({
 }) {
   return (
     <Card className="px-8 py-12 text-center">
-      <h3 className="font-display text-2xl">{title}</h3>
+      <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
       <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">{description}</p>
       {action ? <div className="mt-6 flex justify-center">{action}</div> : null}
     </Card>
@@ -180,10 +180,9 @@ export function ComingSoon({
   description: string;
 }) {
   return (
-    <Card className="relative overflow-hidden p-8">
-      <div className="absolute inset-y-0 right-0 w-1/3 bg-[radial-gradient(circle_at_top,_rgba(194,78,29,0.12),_transparent_60%)]" />
-      <Badge tone="gold">Coming soon</Badge>
-      <h2 className="mt-4 font-display text-3xl">{title}</h2>
+    <Card className="p-8">
+      <Badge tone="muted">Coming soon</Badge>
+      <h2 className="mt-4 text-2xl font-semibold tracking-tight">{title}</h2>
       <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-soft">{description}</p>
       <p className="mt-6 text-xs uppercase tracking-wider text-ink-soft">
         Phase 1 ships Brand DNA, starter package, website, and content. Live ads and posting come next.
@@ -196,7 +195,7 @@ export function Stat({ label, value }: { label: string; value: string | number }
   return (
     <Card className="px-4 py-3">
       <p className="text-[11px] uppercase tracking-wider text-ink-soft">{label}</p>
-      <p className="mt-1 font-display text-2xl">{value}</p>
+      <p className="mt-1 text-2xl font-semibold tracking-tight tabular-nums">{value}</p>
     </Card>
   );
 }

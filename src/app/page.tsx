@@ -27,8 +27,8 @@ export default function MarketingHome() {
       <main>
         <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 lg:grid-cols-2 lg:items-center lg:py-24">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.22em] text-accent">For independent restaurants</p>
-            <h1 className="mt-4 font-display text-5xl leading-[1.05] sm:text-6xl">
+            <p className="text-sm font-medium text-ink-soft">For independent restaurants</p>
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
               Your AI restaurant branding & marketing team.
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-soft">
@@ -46,29 +46,29 @@ export default function MarketingHome() {
             <p className="mt-4 text-xs text-ink-soft">Demo account · three restaurants · no API keys required.</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-3xl bg-[#1f4e5a] p-6 text-[#f4efe6] sm:row-span-2">
-              <p className="text-xs uppercase tracking-[0.2em] text-[#c4a574]">Harbor Table</p>
-              <p className="mt-8 font-display text-4xl">Come in from the weather.</p>
-              <p className="mt-6 text-sm text-white/70">Pacific coastal · Portland · approved Brand DNA</p>
+            <div className="rounded-lg border border-line bg-white p-6 sm:row-span-2">
+              <p className="text-xs font-medium text-ink-soft">Harbor Table · Portland</p>
+              <p className="mt-8 text-3xl font-semibold tracking-tight">Come in from the weather.</p>
+              <p className="mt-6 text-sm text-ink-soft">Approved Brand DNA · starter package ready</p>
             </div>
-            <div className="rounded-3xl bg-[#2f4a32] p-6 text-[#f7f4ec]">
-              <p className="text-xs uppercase tracking-[0.2em] text-[#c6d46a]">Little Lime</p>
-              <p className="mt-6 font-display text-2xl">Bright bowls. Quiet heat.</p>
+            <div className="rounded-lg border border-line bg-white p-6">
+              <p className="text-xs font-medium text-ink-soft">Little Lime · Austin</p>
+              <p className="mt-4 text-xl font-semibold tracking-tight">Bright bowls. Quiet heat.</p>
             </div>
-            <div className="rounded-3xl border border-line bg-white/60 p-6">
-              <p className="text-xs uppercase tracking-[0.2em] text-ink-soft">Starter package</p>
-              <p className="mt-3 text-sm leading-relaxed">
+            <div className="rounded-lg border border-line bg-white p-6">
+              <p className="text-xs font-medium text-ink-soft">Starter package</p>
+              <p className="mt-3 text-sm leading-relaxed text-ink-soft">
                 12 socials · 4 videos · site · menu · Google copy · 30-day calendar
               </p>
             </div>
           </div>
         </section>
-        <section className="border-y border-line bg-white/40">
+        <section className="border-y border-line bg-white">
           <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 md:grid-cols-3">
             {steps.map((s) => (
               <div key={s.n}>
-                <p className="font-display text-3xl text-gold">{s.n}</p>
-                <h2 className="mt-2 font-display text-2xl">{s.title}</h2>
+                <p className="text-sm font-medium text-ink-soft">{s.n}</p>
+                <h2 className="mt-2 text-lg font-semibold tracking-tight">{s.title}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-ink-soft">{s.copy}</p>
               </div>
             ))}

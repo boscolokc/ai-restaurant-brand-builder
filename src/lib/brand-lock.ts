@@ -1,4 +1,14 @@
-import type { AppSnapshot, BrandDNA, CalendarPayload, ContentPayload, ContentStatus } from "@/lib/types";
+import type {
+  AppSnapshot,
+  BrandDNA,
+  CalendarPayload,
+  ContentPayload,
+  ContentStatus,
+  SocialConceptPayload,
+  SocialPayload,
+  VideoConceptPayload,
+  VideoPayload,
+} from "@/lib/types";
 
 /**
  * Brand DNA lock helpers.
@@ -45,7 +55,32 @@ export function applyBrandDnaRelock(snapshot: AppSnapshot, restaurantId: string)
 }
 
 export function isCalendarPayload(payload: ContentPayload | null | undefined): payload is CalendarPayload {
-  return Boolean(payload && typeof payload === "object" && "dayIndex" in payload);
+  return Boolean(payload && typeof payload === "object" && "dayIndex" in payload && "dayOfWeek" in payload);
+}
+
+export function isSocialConceptPayload(payload: ContentPayload | null | undefined): payload is SocialConceptPayload {
+  return Boolean(payload && typeof payload === "object" && "postId" in payload && "captionZh" in payload);
+}
+
+export function isSocialPayload(payload: ContentPayload | null | undefined): payload is SocialPayload {
+  return Boolean(
+    payload &&
+      typeof payload === "object" &&
+      "overlay" in payload &&
+      "caption" in payload &&
+      !("postId" in payload) &&
+      !("dayIndex" in payload),
+  );
+}
+
+export function isVideoConceptPayload(payload: ContentPayload | null | undefined): payload is VideoConceptPayload {
+  return Boolean(payload && typeof payload === "object" && "videoId" in payload && "scriptBeats" in payload);
+}
+
+export function isVideoPayload(payload: ContentPayload | null | undefined): payload is VideoPayload {
+  return Boolean(
+    payload && typeof payload === "object" && "frames" in payload && Array.isArray(payload.frames) && !("videoId" in payload),
+  );
 }
 
 export function contentStatusTone(status: ContentStatus): "green" | "accent" | "gold" | "muted" {

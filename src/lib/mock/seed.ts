@@ -17,7 +17,11 @@ import {
   meetUContent,
   meetUDna,
   meetUDnaSuperseded,
+  meetUSocialContent,
+  meetUSocialJob,
   meetUStarterJob,
+  meetUVideoContent,
+  meetUVideoJob,
   meetUWebsite,
 } from "@/lib/mock/seed-meet-u";
 
@@ -900,8 +904,17 @@ export function createSeedSnapshot(): AppSnapshot {
     restaurants: [harbor, lime, meetU],
     brandDnas: [harborDna, limeDna, meetUDnaSuperseded, meetUDna],
     assets: [...harborAssets, ...limeAssets, ...meetUAssets],
-    jobs: [jobStarter, jobSocial, jobVideo, meetUStarterJob, meetUCalendarJob],
-    contentItems: [...socialItems, ...videoItems, ...menuItems, gbpItem, ...extraCalendar, ...meetUContent],
+    jobs: [jobStarter, jobSocial, jobVideo, meetUStarterJob, meetUCalendarJob, meetUSocialJob, meetUVideoJob],
+    contentItems: [
+      ...socialItems,
+      ...videoItems,
+      ...menuItems,
+      gbpItem,
+      ...extraCalendar,
+      ...meetUContent,
+      ...meetUSocialContent,
+      ...meetUVideoContent,
+    ],
     websites: [harborWebsite, meetUWebsite],
     campaigns: [
       {

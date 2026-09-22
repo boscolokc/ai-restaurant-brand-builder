@@ -22,24 +22,24 @@ export default function PricingPage() {
     <div className="flex min-h-full flex-col">
       <MarketingHeader />
       <main className="mx-auto w-full max-w-5xl px-4 py-16">
-        <p className="text-xs uppercase tracking-[0.2em] text-ink-soft">Pricing</p>
-        <h1 className="mt-2 font-display text-5xl">Simple on purpose.</h1>
+        <p className="text-sm font-medium text-ink-soft">Pricing</p>
+        <h1 className="mt-2 text-4xl font-semibold tracking-tight">Simple on purpose.</h1>
         <p className="mt-3 max-w-xl text-ink-soft">
           Billing is stubbed in Phase 1. These numbers are placeholders so the page feels real.
         </p>
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {plans.map((p) => (
             <Card key={p.name} className="p-8">
-              <h2 className="font-display text-3xl">{p.name}</h2>
-              <p className="mt-4 font-display text-4xl">{p.price}</p>
+              <h2 className="text-lg font-semibold">{p.name}</h2>
+              <p className="mt-4 text-3xl font-semibold tracking-tight">{p.price}</p>
               <p className="text-sm text-ink-soft">{p.note}</p>
               <ul className="mt-6 space-y-2 text-sm">
                 {p.points.map((x) => (
                   <li key={x}>· {x}</li>
                 ))}
               </ul>
-              <Button className="mt-8" asChild>
-                <Link href="/signup">Try the demo</Link>
+              <Button className="mt-8" variant={p.name === "Kitchen" ? "primary" : "outline"} asChild>
+                <Link href="/signup">{p.name === "Kitchen" ? "Start with the demo" : "See the demo"}</Link>
               </Button>
             </Card>
           ))}

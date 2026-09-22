@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f6f0e6;
-  --paper-2: #ece3d4;
-  --ink: #1f1a16;
-  --ink-soft: #6b6056;
-  --line: #ddd2c2;
-  --accent: #c24e1d;
-  --accent-2: #2f5d50;
-  --gold: #b0893e;
-  --white: #fffcf7;
+  --paper: #f8fafc;
+  --paper-2: #f1f5f9;
+  --ink: #0f172a;
+  --ink-soft: #64748b;
+  --line: #e2e8f0;
+  --accent: #0f172a;
+  --accent-press: #1e293b;
+  --accent-2: #0f766e;
+  --gold: #92400e;
+  --white: #ffffff;
 }
 
 @theme inline {
@@ -19,11 +20,12 @@
   --color-ink-soft: var(--ink-soft);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-accent-press: var(--accent-press);
   --color-accent-2: var(--accent-2);
   --color-gold: var(--gold);
   --color-white: var(--white);
-  --font-sans: var(--font-outfit);
-  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-sans-ui);
+  --font-display: var(--font-sans-ui);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -34,10 +36,37 @@ body {
 }
 
 body {
-  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans-ui), ui-sans-serif, system-ui, sans-serif;
 }
 
 .font-display {
+  font-family: var(--font-sans-ui), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Warmth stays on Brand DNA profile and creative review only. */
+.brand-surface {
+  --paper: #f6f1e8;
+  --paper-2: #efe4d4;
+  --ink: #1c1612;
+  --ink-soft: #6d6258;
+  --line: #e4d7c6;
+  --accent: #9a3412;
+  --accent-press: #7c2d12;
+  --accent-2: #3f6212;
+  --gold: #a16207;
+  --white: #fffdf8;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+
+.brand-surface .font-display,
+.brand-type .font-display {
   font-family: var(--font-fraunces), ui-serif, Georgia, serif;
-  font-optical-sizing: auto;
+  font-weight: 520;
+  letter-spacing: -0.015em;
 }

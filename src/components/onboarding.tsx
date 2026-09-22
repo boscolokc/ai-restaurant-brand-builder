@@ -30,10 +30,10 @@ export function OnboardingStepper({
             <Link
               href={`/app/${restaurantId}/onboarding/${step}`}
               className={cn(
-                "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs",
-                active && "border-ink bg-ink text-paper",
-                done && "border-accent-2/30 bg-accent-2/10 text-accent-2",
-                !active && !done && "border-line text-ink-soft",
+                "inline-flex items-center gap-2 rounded-md border px-2.5 py-1 text-xs",
+                active && "border-ink bg-paper-2 font-medium text-ink",
+                done && "border-line bg-white text-ink-soft",
+                !active && !done && "border-transparent text-ink-soft",
               )}
             >
               <span>{i + 1}</span>
