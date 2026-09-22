@@ -1,19 +1,78 @@
 @import "tailwindcss";
 
+/*
+ * Hearth design system v1.2 — dual layer.
+ * Shell tokens drive app chrome. Brand-moment tokens apply only inside
+ * .brand-moment / .brand-surface / .brand-type.
+ */
 :root {
-  --paper: #f8fafc;
-  --paper-2: #f1f5f9;
-  --ink: #0f172a;
-  --ink-soft: #64748b;
-  --line: #e2e8f0;
-  --accent: #0f172a;
-  --accent-press: #1e293b;
-  --accent-2: #0f766e;
-  --gold: #92400e;
+  /* Shell — corporate / SaaS chrome */
+  --bg-shell: #fafafa;
+  --bg-shell-subtle: #f4f4f5;
+  --text-shell: #18181b;
+  --text-shell-muted: #71717a;
+  --border-shell: #e4e4e7;
+  --accent-shell: #27272a;
+  --accent-shell-press: #18181b;
+
+  /* Brand moments — reveal, creative review, you're set */
+  --bg-page: #fbf6f0;
+  --bg-hero: #f5e8dc;
+  --bg-section-mint: #e6f3ec;
+  --bg-section-lavender: #f0ebf8;
+  --bg-section-peach: #fce8df;
+  --bg-section-sky: #e8f1f8;
+  --bg-section-olive: #eef2e6;
+  --bg-card: #ffffff;
+  --text-primary: #1c1917;
+  --text-muted: #6f6860;
+  --text-on-accent: #ffffff;
+  --accent-primary: #c45c26;
+  --accent-primary-press: #9a4318;
+  --accent-coral: #e07a5f;
+  --accent-olive: #6b7f5a;
+  --accent-soft: #f5d5c4;
+  --border-subtle: #e8e2db;
+  --success: #3d8b6e;
+
+  /* Legacy aliases follow the shell until a brand moment overrides them. */
+  --paper: var(--bg-shell);
+  --paper-2: var(--bg-shell-subtle);
+  --ink: var(--text-shell);
+  --ink-soft: var(--text-shell-muted);
+  --line: var(--border-shell);
+  --accent: var(--accent-shell);
+  --accent-press: var(--accent-shell-press);
+  --accent-2: var(--success);
+  --gold: #a16207;
   --white: #ffffff;
 }
 
 @theme inline {
+  --color-shell: var(--bg-shell);
+  --color-shell-subtle: var(--bg-shell-subtle);
+  --color-shell-fg: var(--text-shell);
+  --color-shell-muted: var(--text-shell-muted);
+  --color-shell-border: var(--border-shell);
+  --color-shell-accent: var(--accent-shell);
+
+  --color-moment: var(--bg-page);
+  --color-hero: var(--bg-hero);
+  --color-mint: var(--bg-section-mint);
+  --color-lavender: var(--bg-section-lavender);
+  --color-peach: var(--bg-section-peach);
+  --color-sky: var(--bg-section-sky);
+  --color-olive-wash: var(--bg-section-olive);
+  --color-moment-card: var(--bg-card);
+  --color-moment-fg: var(--text-primary);
+  --color-moment-muted: var(--text-muted);
+  --color-terracotta: var(--accent-primary);
+  --color-coral: var(--accent-coral);
+  --color-olive: var(--accent-olive);
+  --color-soft: var(--accent-soft);
+  --color-moment-border: var(--border-subtle);
+  --color-success: var(--success);
+
   --color-paper: var(--paper);
   --color-paper-2: var(--paper-2);
   --color-ink: var(--ink);
@@ -31,39 +90,44 @@
 
 html,
 body {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--bg-shell);
+  color: var(--text-shell);
 }
 
 body {
   font-family: var(--font-sans-ui), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Shell headlines stay in the UI sans. Fraunces is opt-in on brand moments. */
 .font-display {
   font-family: var(--font-sans-ui), ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
-/* Warmth stays on Brand DNA profile and creative review only. */
+.brand-moment,
 .brand-surface {
-  --paper: #f6f1e8;
-  --paper-2: #efe4d4;
-  --ink: #1c1612;
-  --ink-soft: #6d6258;
-  --line: #e4d7c6;
-  --accent: #9a3412;
-  --accent-press: #7c2d12;
-  --accent-2: #3f6212;
-  --gold: #a16207;
-  --white: #fffdf8;
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: 0.75rem;
+  --paper: var(--bg-page);
+  --paper-2: var(--bg-hero);
+  --ink: var(--text-primary);
+  --ink-soft: var(--text-muted);
+  --line: var(--border-subtle);
+  --accent: var(--accent-primary);
+  --accent-press: var(--accent-primary-press);
+  --accent-2: var(--accent-olive);
+  --gold: var(--accent-coral);
+  --white: var(--bg-card);
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+
+.brand-surface {
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.25rem;
   padding: 1.25rem;
 }
 
+.brand-moment .font-display,
 .brand-surface .font-display,
 .brand-type .font-display {
   font-family: var(--font-fraunces), ui-serif, Georgia, serif;

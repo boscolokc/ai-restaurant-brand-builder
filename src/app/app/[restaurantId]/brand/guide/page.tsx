@@ -8,15 +8,18 @@ export default function BrandGuidePage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const { restaurant, brandDna } = useRestaurantBundle(restaurantId);
   const locks = brandDna?.rawAnalysis?.locks;
-  const pandaOnly =
-    locks && typeof locks === "object" && (locks as { chefFaceIp?: string }).chefFaceIp === "talent-only";
+  const chefFace =
+    locks && typeof locks === "object" ? (locks as { chefFaceIp?: string }).chefFaceIp : undefined;
   const rules = [
     { title: "Do", body: brandDna?.photographyDirection ?? "Shoot food in the room it is eaten." },
     {
       title: "Don’t",
-      body: pandaOnly
-        ? "No chef face or 饺子哥 caricature. Mode B is panda only. No delivery, Monday service, or late-night hours."
-        : "No clipart chili peppers, no stock chef smile, no neon sale stickers.",
+      body:
+        chefFace === "talent-only"
+          ? "No chef face or 饺子哥 caricature. Mode B is panda only. No delivery, Monday service, or late-night hours."
+          : chefFace === "owned-brand-ip"
+            ? "Mode A stays panda. Mode B may use the owned 饺子哥 chef caricature. No delivery, Monday service, or late-night hours."
+            : "No clipart chili peppers, no stock chef smile, no neon sale stickers.",
     },
     { title: "Voice", body: brandDna?.voice ?? "Short and specific." },
     { title: "CTA", body: brandDna?.ctaStyle ?? "Invite people in. Don’t shout." },

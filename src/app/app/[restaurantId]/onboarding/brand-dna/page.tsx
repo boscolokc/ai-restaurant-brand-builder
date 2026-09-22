@@ -28,11 +28,11 @@ export default function OnboardingBrandDnaPage() {
   }
 
   return (
-    <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-ink-soft">Step 5 · review</p>
-      <h1 className="mt-2 font-display text-4xl">Does this sound like {restaurant?.name}?</h1>
-      <p className="mt-2 max-w-2xl text-sm text-ink-soft">
-        Nothing else generates until you approve. If a line feels off, you can still continue — you can edit the board
+    <div className="brand-moment -mx-4 overflow-hidden px-4 py-8 sm:mx-0 sm:rounded-[20px] sm:px-6">
+      <p className="text-xs uppercase tracking-[0.18em] text-coral">Your brand profile</p>
+      <h1 className="font-display mt-2 text-4xl">Does this sound like {restaurant?.name}?</h1>
+      <p className="mt-2 max-w-2xl text-base leading-relaxed text-moment-muted">
+        Nothing else generates until you approve. If a line feels off, you can still continue — you can edit the profile
         later.
       </p>
       <div className="mt-8">
@@ -46,7 +46,7 @@ export default function OnboardingBrandDnaPage() {
             router.push(`/app/${restaurantId}/onboarding/generating`);
           }}
         >
-          Approve Brand DNA
+          Approve brand profile
         </Button>
         <Button size="lg" variant="outline" onClick={() => router.push(`/app/${restaurantId}/brand/edit`)}>
           Edit first
