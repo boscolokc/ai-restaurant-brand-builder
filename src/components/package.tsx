@@ -40,14 +40,14 @@ export function StarterPackageGrid({
         const ready = typeof value === "boolean" ? value : Number(value) > 0;
         return (
           <Link key={item.key} href={`/app/${restaurantId}/${item.href}`}>
-            <Card className="h-full p-5 transition hover:-translate-y-0.5 hover:border-ink/20">
+            <Card className="h-full p-5 transition hover:border-ink/15">
               <div className="flex items-start justify-between">
-                <div className="grid h-10 w-10 place-items-center rounded-xl bg-paper-2">
+                <div className="grid h-9 w-9 place-items-center rounded-md border border-line bg-paper-2">
                   <Icon className="h-5 w-5" />
                 </div>
                 <Badge tone={ready ? "green" : "muted"}>{ready ? "Ready" : "Waiting"}</Badge>
               </div>
-              <h3 className="mt-4 font-display text-xl">{item.label}</h3>
+              <h3 className="mt-4 text-base font-semibold tracking-tight">{item.label}</h3>
               <p className="mt-1 text-sm text-ink-soft">
                 {item.copy}
                 {typeof value === "number" ? ` · ${value}` : ""}

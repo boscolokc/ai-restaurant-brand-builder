@@ -8,10 +8,11 @@ import {
   contentStatusLabel,
   contentStatusTone,
   isCalendarPayload,
+  isSocialConceptPayload,
+  isSocialPayload,
   useAppStore,
   useRestaurantBundle,
 } from "@/lib/mock/store";
-import type { SocialPayload } from "@/lib/types";
 
 export default function SocialCreativesPage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
@@ -31,20 +32,29 @@ export default function SocialCreativesPage() {
       {concepts.length === 0 ? (
         <p className="text-sm text-ink-soft">No social concepts yet. Approve Brand DNA to generate the starter set.</p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="brand-surface grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {concepts.map((c) => {
-            const payload = c.payload as SocialPayload | null;
+            const concept = isSocialConceptPayload(c.payload) ? c.payload : null;
+            const legacy = isSocialPayload(c.payload) ? c.payload : null;
             return (
-              <div key={c.id} className="overflow-hidden rounded-2xl border border-line bg-white/70">
-                <PhotoTile title={c.title} overlay={payload?.overlay ?? c.title} large />
+              <div key={c.id} className="overflow-hidden rounded-md border border-line bg-white">
+                <PhotoTile
+                  title={c.title}
+                  overlay={concept?.captionZh ?? legacy?.overlay ?? c.title}
+                  large
+                  expressive
+                />
                 <div className="space-y-3 p-4">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs uppercase tracking-wider text-ink-soft">
-                      {c.conceptIndex}/12 · {c.platform} · {payload?.format}
+                    <p className="text-xs text-ink-soft">
+                      {concept?.postId ?? `${c.conceptIndex}/12`} · {c.platform}
+                      {concept ? ` · Mode ${concept.mode}` : legacy ? ` · ${legacy.format}` : ""}
                     </p>
                     <Badge tone={contentStatusTone(c.status)}>{contentStatusLabel(c.status)}</Badge>
                   </div>
-                  <p className="text-sm leading-relaxed">{c.body}</p>
+                  <p className="font-display text-lg leading-snug">{concept?.captionZh ?? c.body}</p>
+                  {concept ? <p className="text-sm text-ink-soft">{concept.visualConcept}</p> : null}
+                  {concept ? <p className="text-sm">CTA · {concept.cta}</p> : null}
                   <div className="flex gap-2">
                     <Button size="sm" onClick={() => updateContentStatus(c.id, "APPROVED")}>
                       Approve

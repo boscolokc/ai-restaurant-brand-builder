@@ -27,7 +27,7 @@ import type {
 } from "@/lib/types";
 import { slugify, uid } from "@/lib/utils";
 
-const STORAGE_KEY = "hearth-demo-store-v2";
+const STORAGE_KEY = "hearth-demo-store-v3";
 
 type StoreContextValue = {
   hydrated: boolean;
@@ -551,6 +551,10 @@ export {
   getApprovedBrandDna,
   isBrandDnaStale,
   isCalendarPayload,
+  isSocialConceptPayload,
+  isSocialPayload,
+  isVideoConceptPayload,
+  isVideoPayload,
   contentStatusLabel,
   contentStatusTone,
 } from "@/lib/brand-lock";

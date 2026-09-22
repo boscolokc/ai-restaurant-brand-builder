@@ -74,7 +74,7 @@ One hospitality group, **three restaurants**:
 
 1. **Harbor Table** (`/app/harbor-table`) — onboarding complete, approved Brand DNA, full starter package. Jobs and content carry `brandDnaId`.
 2. **Little Lime** (`/app/little-lime`) — waiting on Brand DNA review. Approve it to unlock a mock starter package on Home.
-3. **见您一面 / Meet U 1 Face Noodle** (`/app/meet-u-1-face`) — G-52 ICC Pudu, KL. Approved Brand DNA v2, week-1 calendar `ContentItem`s with the Marketing Lead payload shape, plus one `NEEDS_RELOCK` row still pointing at superseded v1.
+3. **见您一面 / Meet U 1 Face Noodle** (`/app/meet-u-1-face`) — G-52 ICC Pudu, KL. Approved Brand DNA id `branddna_meetu_v1` (v1, panda-only Mode B). Week-1 calendar, 12 social concepts, and 4 video concepts carry that id. One `NEEDS_RELOCK` row still points at superseded `branddna_meetu_prelock`.
 
 Add another via **Add restaurant** to walk the full onboarding path (basics → photos → business → analyzing → Brand DNA → generating → done).
 
@@ -91,6 +91,10 @@ Review rule (see `src/lib/brand-lock.ts`): if `content.brandDnaId !==` the resta
 Schedule fields sit on columns (`scheduledFor`, `platform`, `body`, `brandDnaId`, `status`). Details in JSON:
 
 `dayIndex`, `dayOfWeek`, `isClosedDay`, `format`, `pillar`, `hookCaptionEn`, `creativeNote`, `cta`, `hashtags`, `campaignTheme`.
+
+Social concepts (`SocialConceptPayload`): `postId`, `pillar`, `objective`, `captionZh`, `captionEn`, `visualConcept`, `mode` (`A`|`B`), `cta`, `ratios`, `layoutNotesByRatio`.
+
+Video concepts (`VideoConceptPayload`): `videoId`, `title`, `durationSec`, `mode`, `scriptBeats`, `storyboardFrames`, `shotList`, `previewBrief`.
 
 ## Route map
 
