@@ -27,7 +27,7 @@ import type {
 } from "@/lib/types";
 import { slugify, uid } from "@/lib/utils";
 
-const STORAGE_KEY = "hearth-demo-store-v3";
+const STORAGE_KEY = "hearth-demo-store-v4";
 
 type StoreContextValue = {
   hydrated: boolean;

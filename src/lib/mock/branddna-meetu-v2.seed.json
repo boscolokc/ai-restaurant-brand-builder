@@ -1,13 +1,13 @@
 {
-  "id": "branddna_meetu_v1",
+  "id": "branddna_meetu_v2",
   "restaurantSlug": "meet-u-1-face-noodle",
-  "status": "SUPERSEDED",
-  "version": 1,
-  "supersededBy": "branddna_meetu_v2",
-  "approvedAt": "2026-09-22T15:40:00+08:00",
+  "status": "APPROVED",
+  "version": 2,
+  "supersedes": "branddna_meetu_v1",
+  "approvedAt": "2026-09-22T22:38:00+08:00",
   "positioning": "亲民手工饺子品牌 at ICC PUDU — breakfast/lunch, 上汤水饺 + 香煎饺子, approachable cute panda + 饺子哥 street energy. Wordplay on 见面.",
   "audience": "ICC PUDU office workers, local breakfast/lunch seekers, dumpling families, ICC food explorers, young check-in share crowd",
-  "personality": "亲切温暖 · 真诚朴实 · 轻松有趣 · 年轻有活力 · 传统中带现代感; Mode A cute panda, Mode B 饺子哥 hero (panda only — no chef face)",
+  "personality": "亲切温暖 · 真诚朴实 · 轻松有趣 · 年轻有活力 · 传统中带现代感; Mode A cute panda, Mode B 饺子哥 hero with owned chef caricature IP",
   "voice": "简单、直接、亲切 + light humour; Mandarin + Cantonese street tone; owner lines + 饺子哥 stall lines rotate",
   "tagline": "见您一面，吃一口好饺子。",
   "colours": {
@@ -35,9 +35,9 @@
     "body": "Noto Sans SC Medium + Inter",
     "notes": "No thin CN on red; gold type only on black/deep red or solid plaque"
   },
-  "photographyDirection": "明亮真实有烟火气; food hero (皮/馅/汤/脆底); ICC Pudu stall atmosphere; panda as brand connector",
-  "videoDirection": "Vertical appetite clips: steam, pour, bite, first reaction; Mode A everyday / Mode B gold-black energy with panda only",
-  "graphicStyle": "Panda-led Mode A; black+gold Mode B; red paint-stroke energy; 汤饺/煎饺 icons; modern food-court not luxury",
+  "photographyDirection": "明亮真实有烟火气; food hero (皮/馅/汤/脆底); ICC Pudu stall atmosphere; panda as Mode A connector; chef caricature OK for Mode B",
+  "videoDirection": "Vertical appetite clips: steam, pour, bite, first reaction; Mode A everyday panda / Mode B gold-black with 饺子哥 chef face",
+  "graphicStyle": "Panda-led Mode A; chef-face + black+gold Mode B; red paint-stroke energy; 汤饺/煎饺 icons; modern food-court not luxury",
   "ctaStyle": "Meet-you language + place + hours; dine-in only; always Closed Monday; never delivery/late-night",
   "nameStack": {
     "cn": "见您一面",
@@ -48,7 +48,7 @@
   },
   "locks": {
     "cnMaster": "见您一面",
-    "chefFaceIp": "talent-only"
+    "chefFaceIp": "owned-brand-ip"
   },
   "sourcePath": "/workspace/meet-u-1-face-noodle/BRAND-DNA.md"
 }

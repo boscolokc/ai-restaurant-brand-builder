@@ -14,13 +14,14 @@ import type {
   VideoConceptPayload,
   Website,
 } from "@/lib/types";
-import frozenDna from "@/lib/mock/branddna-meetu-v1.seed.json";
+import approvedDna from "@/lib/mock/branddna-meetu-v2.seed.json";
+import supersededDna from "@/lib/mock/branddna-meetu-v1.seed.json";
 
 export const MEET_U_ID = "meet-u-1-face";
-/** Frozen Brand Lead SoT. Approved v1. */
-export const MEET_U_DNA_APPROVED = frozenDna.id;
-/** Pre-freeze draft. One content row still points here so NEEDS_RELOCK stays visible. */
-export const MEET_U_DNA_PRELOCK = "branddna_meetu_prelock";
+/** Frozen Brand Lead SoT. Approved v2. */
+export const MEET_U_DNA_APPROVED = approvedDna.id;
+/** v1 is SUPERSEDED. One content row still points here so NEEDS_RELOCK stays visible. */
+export const MEET_U_DNA_SUPERSEDED = supersededDna.id;
 
 const now = "2026-09-21T08:00:00.000Z";
 const accountId = "acct_demo";
@@ -60,75 +61,94 @@ export const meetU: Restaurant = {
 };
 
 const colours = {
-  primary: frozenDna.colours.primary,
-  secondary: frozenDna.colours.secondary,
-  accent: frozenDna.colours.accent,
-  neutrals: [...frozenDna.colours.neutrals],
+  primary: approvedDna.colours.primary,
+  secondary: approvedDna.colours.secondary,
+  accent: approvedDna.colours.accent,
+  neutrals: [...approvedDna.colours.neutrals],
 };
 
 const typography = {
-  heading: frozenDna.typography.heading,
-  body: frozenDna.typography.body,
-  notes: frozenDna.typography.notes,
+  heading: approvedDna.typography.heading,
+  body: approvedDna.typography.body,
+  notes: approvedDna.typography.notes,
 };
 
-const approvedAt = "2026-09-22T07:40:00.000Z";
+const approvedAt = new Date(approvedDna.approvedAt).toISOString();
+const supersededAt = new Date(supersededDna.approvedAt).toISOString();
 
 export const meetUDnaSuperseded: BrandDNA = {
-  id: MEET_U_DNA_PRELOCK,
+  id: MEET_U_DNA_SUPERSEDED,
   restaurantId: MEET_U_ID,
   status: "SUPERSEDED",
-  version: 0,
-  positioning: "A Pudu dumpling stall with a panda and a chef-face hero still in review.",
-  audience: "ICC Pudu breakfast crowd.",
-  personality: "Cute, still finding its voice. Mode B still used a chef caricature.",
-  voice: "Short lines. Mix CN/EN.",
-  tagline: "见您一面，吃一口好饺子。",
-  colours,
-  typography,
-  photographyDirection: "Food first, panda as connector.",
-  videoDirection: "Pour, bite, steam. Vertical. Chef-face hero was still on the table.",
-  graphicStyle: "Red + cream Mode A. Mode B chef face not locked.",
-  ctaStyle: "Come meet us at G-52.",
-  rawAnalysis: {
-    note: "Pre-freeze draft. Superseded when Brand Lead locked panda-only Mode B.",
-    pendingLocks: ["chef face vs panda-only Mode B"],
+  version: supersededDna.version,
+  positioning: supersededDna.positioning,
+  audience: supersededDna.audience,
+  personality: supersededDna.personality,
+  voice: supersededDna.voice,
+  tagline: supersededDna.tagline,
+  colours: {
+    primary: supersededDna.colours.primary,
+    secondary: supersededDna.colours.secondary,
+    accent: supersededDna.colours.accent,
+    neutrals: [...supersededDna.colours.neutrals],
   },
-  approvedAt: "2026-09-19T04:00:00.000Z",
-  createdAt: "2026-09-18T04:00:00.000Z",
-  updatedAt: "2026-09-22T07:39:00.000Z",
+  typography: {
+    heading: supersededDna.typography.heading,
+    body: supersededDna.typography.body,
+    notes: supersededDna.typography.notes,
+  },
+  photographyDirection: supersededDna.photographyDirection,
+  videoDirection: supersededDna.videoDirection,
+  graphicStyle: supersededDna.graphicStyle,
+  ctaStyle: supersededDna.ctaStyle,
+  rawAnalysis: {
+    note: "SUPERSEDED by branddna_meetu_v2. v1 locked Mode B to panda only (chef face was talent-only).",
+    supersededBy: approvedDna.id,
+    nameStack: supersededDna.nameStack,
+    locks: supersededDna.locks,
+    colourTokens: supersededDna.colours.tokens,
+    creativeModes: [
+      "A — cute panda / everyday social",
+      "B — 饺子哥 hero, panda mascot only (no chef face)",
+    ],
+    sourcePath: supersededDna.sourcePath,
+  },
+  approvedAt: supersededAt,
+  createdAt: "2026-09-22T06:00:00.000Z",
+  updatedAt: approvedAt,
 };
 
 export const meetUDna: BrandDNA = {
   id: MEET_U_DNA_APPROVED,
   restaurantId: MEET_U_ID,
   status: "APPROVED",
-  version: frozenDna.version,
-  positioning: frozenDna.positioning,
-  audience: frozenDna.audience,
-  personality: frozenDna.personality,
-  voice: frozenDna.voice,
-  tagline: frozenDna.tagline,
+  version: approvedDna.version,
+  positioning: approvedDna.positioning,
+  audience: approvedDna.audience,
+  personality: approvedDna.personality,
+  voice: approvedDna.voice,
+  tagline: approvedDna.tagline,
   colours,
   typography,
-  photographyDirection: frozenDna.photographyDirection,
-  videoDirection: frozenDna.videoDirection,
-  graphicStyle: frozenDna.graphicStyle,
-  ctaStyle: frozenDna.ctaStyle,
+  photographyDirection: approvedDna.photographyDirection,
+  videoDirection: approvedDna.videoDirection,
+  graphicStyle: approvedDna.graphicStyle,
+  ctaStyle: approvedDna.ctaStyle,
   rawAnalysis: {
     campaignTheme: "好好见面",
     hours: "Tue–Sun 6:30 AM–2:00 PM · Closed Monday · Last call 2:00 PM",
     address: "G-52 ICC Pudu, Kuala Lumpur",
     offer: ["上汤水饺", "香煎饺子"],
-    restaurantSlug: frozenDna.restaurantSlug,
-    nameStack: frozenDna.nameStack,
-    locks: frozenDna.locks,
-    colourTokens: frozenDna.colours.tokens,
+    restaurantSlug: approvedDna.restaurantSlug,
+    nameStack: approvedDna.nameStack,
+    locks: approvedDna.locks,
+    colourTokens: approvedDna.colours.tokens,
+    supersedes: approvedDna.supersedes,
     creativeModes: [
       "A — cute panda / everyday social",
-      "B — 饺子哥 hero, panda mascot only (no chef face)",
+      "B — 饺子哥 hero with owned chef caricature",
     ],
-    sourcePath: frozenDna.sourcePath,
+    sourcePath: approvedDna.sourcePath,
   },
   approvedAt,
   createdAt: "2026-09-22T06:00:00.000Z",
@@ -165,6 +185,7 @@ export const meetUAssets: Asset[] = [
   asset("a_mu_wrap", "FOOD_PHOTO", "Hands wrapping dumplings"),
   asset("a_mu_storefront", "EXTERIOR", "G-52 ICC Pudu storefront"),
   asset("a_mu_panda", "OTHER", "Panda mascot with plate", "GENERATED"),
+  asset("a_mu_chef", "OTHER", "饺子哥 chef caricature (owned IP)", "GENERATED"),
 ];
 
 export const meetUCalendarJob: CreativeJob = {
@@ -299,9 +320,9 @@ const week1: DayRow[] = [
     title: "汤的暖心，煎的香脆。",
     body: "汤的暖心，煎的香脆。周末打卡，见您一面。",
     hookCaptionEn: "Soup that warms, fry that crackles. Weekend check-in at Meet U 1 Face.",
-    creativeNote: "Mode B Reel: sizzle bottoms + soup pour · panda sticker OK · no chef face",
-    cta: "定位 ICC PUDU，找熊猫（Mode B · panda only）",
-    thumb: "a_mu_fried",
+    creativeNote: "Mode B Reel: sizzle bottoms + soup pour · 饺子哥 chef face OK · black/gold energy",
+    cta: "定位 ICC PUDU · Mode B 找饺子哥（chef face OK）",
+    thumb: "a_mu_chef",
   },
   {
     dayIndex: 6,
@@ -402,10 +423,10 @@ const gbpItem: ContentItem = {
   updatedAt: now,
 };
 
-/** Seeded stale row: still points at the pre-freeze draft so NEEDS_RELOCK stays visible. */
+/** Seeded stale row: still points at superseded v1 so NEEDS_RELOCK stays visible. */
 const staleRelockItem = calendarItem(week1[0], {
   id: "ci_mu_needs_relock",
-  brandDnaId: MEET_U_DNA_PRELOCK,
+  brandDnaId: MEET_U_DNA_SUPERSEDED,
   status: "NEEDS_RELOCK",
 });
 
@@ -435,7 +456,7 @@ const socialRows: SocialRow[] = [
     objective: "Announce presence; plant name + location in KL mindshare",
     captionZh: "见您一面开档啦！汤饺·煎饺，现包现煮。ICC Pudu G-52，早上来见饺子哥一面！",
     captionEn: "MEET U 1 FACE NOODLE is here. Soup dumplings + fried dumplings — handmade fresh. G-52 ICC Pudu.",
-    visualConcept: "Panda mascot waves in front of the stall with steam; soft OPEN badge in gold on red. No chef face.",
+    visualConcept: "Mode A panda waves in front of the stall with steam; soft OPEN badge in gold on red.",
     mode: "A",
     cta: "来见您一面 → Save location / Follow",
     layoutNotesByRatio: {
@@ -498,21 +519,21 @@ const socialRows: SocialRow[] = [
   },
   {
     postId: "SOC-05-JIAOZI-GE",
-    title: "饺子哥 · panda only",
+    title: "饺子哥 · chef face",
     pillar: "饺子哥 persona",
     objective: "Memorize character; own “要饺子，找饺子哥”",
     captionZh: "我是饺子哥。汤饺煎饺现包现煮——想吃餃子，就找餃子哥！",
     captionEn: "I’m Dumpling Brother. Handmade soup + fried dumplings. Come find me.",
     visualConcept:
-      "Mode B hero: gold-black field, panda mascot with red headband only. No chef face, no human caricature.",
+      "Mode B hero: gold-black field, owned 饺子哥 chef caricature (thumbs-up OK) + optional panda stamp, speed/energy frame.",
     mode: "B",
     cta: "Follow 饺子哥 / 关注见您一面",
     layoutNotesByRatio: {
-      "4:5": "Full-bleed black; gold rim; panda center; CN shout line top; EN sub bottom.",
-      "1:1": "Circular gold frame around panda; wordmark under.",
-      "9:16": "Hero panda lower-center; kinetic gold particles; CTA thumb zone.",
+      "4:5": "Full-bleed black; gold rim; chef caricature center; CN shout line top; EN sub bottom.",
+      "1:1": "Circular gold frame around the chef face; wordmark under.",
+      "9:16": "Hero chef lower-center; kinetic gold particles; CTA thumb zone.",
     },
-    thumb: "a_mu_panda",
+    thumb: "a_mu_chef",
   },
   {
     postId: "SOC-06-UGC-STYLE",
@@ -589,7 +610,8 @@ const socialRows: SocialRow[] = [
     objective: "Protect lunch last-call; no false scarcity on stock",
     captionZh: "Last Call 2:00 PM。过了就明天见（周一休息）。想吃就早来。",
     captionEn: "Last Call 2:00 PM. After that — tomorrow (closed Mondays).",
-    visualConcept: "Mode B urgency: gold LAST CALL badge on black; red CTA; clock cue. Panda only, no chef face.",
+    visualConcept:
+      "Mode B urgency: gold LAST CALL badge on black; red CTA; clock cue. Owned 饺子哥 chef face OK.",
     mode: "B",
     cta: "今天下午两点前见",
     layoutNotesByRatio: {
@@ -597,7 +619,7 @@ const socialRows: SocialRow[] = [
       "1:1": "Badge-centered.",
       "9:16": "Countdown-style static (no fake live timer); CTA bottom.",
     },
-    thumb: "a_mu_panda",
+    thumb: "a_mu_chef",
   },
   {
     postId: "SOC-11-KL-LOCAL",
@@ -623,7 +645,7 @@ const socialRows: SocialRow[] = [
     objective: "Second visit without inventing loyalty program details",
     captionZh: "上次汤饺，这次煎饺？还是两样都来——饺子哥在 G-52 等你再见面。",
     captionEn: "Soup last time, fried this time? Or both. Dumpling Brother’s at G-52.",
-    visualConcept: "Split 汤饺 | 煎饺 return card; “再见面” stamp; panda wink. No chef face.",
+    visualConcept: "Split 汤饺 | 煎饺 return card; “再见面” stamp; Mode A panda wink.",
     mode: "A",
     cta: "下次见您一面",
     layoutNotesByRatio: {
@@ -643,7 +665,7 @@ export const meetUSocialJob: CreativeJob = {
   status: "SUCCEEDED",
   progress: 100,
   input: { count: 12, brandDnaId: MEET_U_DNA_APPROVED },
-  output: { concepts: 12, note: "Starter package social concepts, panda-only Mode B" },
+  output: { concepts: 12, note: "Starter package social concepts locked to branddna_meetu_v2; Mode B chef face restored" },
   error: null,
   startedAt: approvedAt,
   finishedAt: approvedAt,
@@ -693,6 +715,7 @@ type VideoRow = {
   storyboardFrames: VideoConceptPayload["storyboardFrames"];
   shotList: string[];
   previewBrief: string;
+  thumb: string;
 };
 
 const videoRows: VideoRow[] = [
@@ -725,34 +748,36 @@ const videoRows: VideoRow[] = [
       "Optional live plate later: storefront (TBD)",
     ],
     previewBrief:
-      "Upbeat, warm, 10–15% Mode B gold flashes only on OPEN/CTA. Clean address. No fake crowd cheers. Panda only — no chef face.",
+      "Upbeat, warm, 10–15% Mode B gold flashes only on OPEN/CTA. Clean address. No fake crowd cheers. Mode A panda welcome.",
+    thumb: "a_mu_panda",
   },
   {
     videoId: "VID-02",
     title: "饺子哥 · Dumpling Brother",
     durationSec: 40,
     mode: "B",
-    body: "Persona film. Panda-only Mode B — chef caricature is talent-only and stays out.",
+    body: "Persona film. Mode B hero uses the owned 饺子哥 chef caricature. Panda stays Mode A.",
     scriptBeats: [
       { startSec: 0, endSec: 4, line: "Black/gold hit; VO: 「我是饺子哥。」 / “I’m Dumpling Brother.”" },
       { startSec: 4, endSec: 12, line: "Origin beat: loves dumplings, wants everyone to 见面" },
       { startSec: 12, endSec: 22, line: "Points to 汤饺 & 煎饺; 现包现煮 montage" },
       { startSec: 22, endSec: 30, line: "Taglines 1 & 3 on screen; Mandarin + Cantonese cadence" },
-      { startSec: 30, endSec: 40, line: "Mode B panda hero freeze → soft Mode A smile → follow CTA" },
+      { startSec: 30, endSec: 40, line: "Mode B chef-face hero freeze → soft Mode A panda smile → follow CTA" },
     ],
     storyboardFrames: [
       { order: 1, description: "Gold slash on black" },
-      { order: 2, description: "Headband tie close-up (panda)" },
-      { order: 3, description: "Panda reveal" },
+      { order: 2, description: "Chef caricature, black jacket and gold accents" },
+      { order: 3, description: "Thumbs-up 饺子哥 reveal" },
       { order: 4, description: "Dual product gesture" },
       { order: 5, description: "Hands wrapping dumpling" },
       { order: 6, description: "Tagline slam" },
-      { order: 7, description: "Mode B panda hero freeze" },
-      { order: 8, description: "Soft smile end card" },
+      { order: 7, description: "Mode B chef-face hero freeze" },
+      { order: 8, description: "Soft Mode A panda smile end card" },
     ],
-    shotList: ["Mode B lighting pack (rim gold)", "Macro headband / dumpling", "Kinetic type CN"],
+    shotList: ["Mode B lighting pack (rim gold)", "Owned chef caricature hero", "Kinetic type CN"],
     previewBrief:
-      "High-energy, food-first. Persona is a warm street-smart big brother, not an idol. Gold-black dominant; red headband readable. Panda mascot only — no chef face.",
+      "High-energy, food-first. Persona is a warm street-smart big brother, not an idol. Gold-black dominant. Owned 饺子哥 chef caricature is the Mode B hero; panda stays Mode A.",
+    thumb: "a_mu_chef",
   },
   {
     videoId: "VID-03",
@@ -777,7 +802,8 @@ const videoRows: VideoRow[] = [
     ],
     shotList: ["Macro 85–100mm feel", "Slow motion steam", "Shallow DOF", "No invented ingredients"],
     previewBrief:
-      "Sensory, quiet confidence, Mode A. Warm highlights, true chili red. Logo only at end. No chef face.",
+      "Sensory, quiet confidence, Mode A. Warm highlights, true chili red. Logo only at end.",
+    thumb: "a_mu_soup",
   },
   {
     videoId: "VID-04",
@@ -805,7 +831,8 @@ const videoRows: VideoRow[] = [
     ],
     shotList: ["Morning color temperature", "Subtle steam time-lapse", "Hours graphics", "Location lower-thirds"],
     previewBrief:
-      "Documentary-lite plus brand warmth. Morning pace, then food. Monday closed on screen once. No promo discounts. Panda only.",
+      "Documentary-lite plus brand warmth. Morning pace, then food. Monday closed on screen once. No promo discounts. Mode A panda.",
+    thumb: "a_mu_panda",
   },
 ];
 
@@ -849,7 +876,7 @@ export const meetUVideoContent: ContentItem[] = videoRows.map((row, i) => {
     conceptIndex: i + 1,
     scheduledFor: null,
     payload,
-    thumbnailKey: i % 2 === 0 ? "a_mu_soup" : "a_mu_panda",
+    thumbnailKey: row.thumb,
     createdAt: approvedAt,
     updatedAt: approvedAt,
   };
