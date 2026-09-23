@@ -42,6 +42,7 @@ export type ContentStatus =
   | "APPROVED"
   | "SCHEDULED"
   | "PUBLISHED"
+  | "NEEDS_RELOCK"
   | "ARCHIVED";
 
 export type WebsiteStatus = "DRAFT" | "READY" | "PUBLISHED";
@@ -104,6 +105,31 @@ export type VideoPayload = {
   aspect: "9:16" | "1:1" | "16:9";
   frames: VideoFrame[];
 };
+
+/** 30-day calendar details stored on ContentItem.payload (Marketing Lead contract). */
+export type CalendarPayload = {
+  dayIndex: number;
+  dayOfWeek: string;
+  isClosedDay: boolean;
+  format: "photo" | "carousel" | "reel" | "stories" | "poll" | "static";
+  pillar:
+    | "product_soup"
+    | "product_fried"
+    | "process"
+    | "interactive"
+    | "people"
+    | "place_icc"
+    | "panda"
+    | "soft_closed"
+    | string;
+  hookCaptionEn?: string;
+  creativeNote?: string;
+  cta?: string;
+  hashtags?: string[];
+  campaignTheme?: string;
+};
+
+export type ContentPayload = Record<string, unknown> | SocialPayload | VideoPayload | CalendarPayload;
 
 export type Account = {
   id: string;
@@ -178,6 +204,7 @@ export type Asset = {
 export type CreativeJob = {
   id: string;
   restaurantId: string;
+  brandDnaId: string | null;
   type: CreativeJobType;
   status: CreativeJobStatus;
   progress: number;
@@ -193,6 +220,7 @@ export type CreativeJob = {
 export type ContentItem = {
   id: string;
   restaurantId: string;
+  brandDnaId: string | null;
   jobId: string | null;
   kind: ContentKind;
   status: ContentStatus;
@@ -201,7 +229,7 @@ export type ContentItem = {
   platform: string | null;
   conceptIndex: number | null;
   scheduledFor: string | null;
-  payload: Record<string, unknown> | SocialPayload | VideoPayload | null;
+  payload: ContentPayload | null;
   thumbnailKey: string | null;
   createdAt: string;
   updatedAt: string;

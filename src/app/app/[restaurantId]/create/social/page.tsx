@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { PhotoTile } from "@/components/media";
 import { Badge, Button, PageHeader } from "@/components/ui";
-import { useAppStore, useRestaurantBundle } from "@/lib/mock/store";
+import {
+  contentStatusLabel,
+  contentStatusTone,
+  isCalendarPayload,
+  useAppStore,
+  useRestaurantBundle,
+} from "@/lib/mock/store";
 import type { SocialPayload } from "@/lib/types";
 
 export default function SocialCreativesPage() {
@@ -12,7 +18,7 @@ export default function SocialCreativesPage() {
   const { contentItems } = useRestaurantBundle(restaurantId);
   const { updateContentStatus } = useAppStore();
   const concepts = contentItems
-    .filter((c) => c.kind === "SOCIAL_IMAGE")
+    .filter((c) => c.kind === "SOCIAL_IMAGE" && c.conceptIndex != null && !isCalendarPayload(c.payload))
     .sort((a, b) => (a.conceptIndex ?? 0) - (b.conceptIndex ?? 0));
 
   return (
@@ -36,7 +42,7 @@ export default function SocialCreativesPage() {
                     <p className="text-xs uppercase tracking-wider text-ink-soft">
                       {c.conceptIndex}/12 · {c.platform} · {payload?.format}
                     </p>
-                    <Badge tone={c.status === "APPROVED" ? "green" : "gold"}>{c.status.replace("_", " ")}</Badge>
+                    <Badge tone={contentStatusTone(c.status)}>{contentStatusLabel(c.status)}</Badge>
                   </div>
                   <p className="text-sm leading-relaxed">{c.body}</p>
                   <div className="flex gap-2">

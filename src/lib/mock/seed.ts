@@ -9,6 +9,17 @@ import type {
   Website,
 } from "@/lib/types";
 import { addDays } from "@/lib/utils";
+import {
+  meetU,
+  meetUAssets,
+  meetUCalendarJob,
+  meetUCampaign,
+  meetUContent,
+  meetUDna,
+  meetUDnaSuperseded,
+  meetUStarterJob,
+  meetUWebsite,
+} from "@/lib/mock/seed-meet-u";
 
 const now = "2026-09-14T16:00:00.000Z";
 const accountId = "acct_demo";
@@ -404,6 +415,7 @@ const videos: { id: string; title: string; body: string; payload: VideoPayload }
 const jobStarter: CreativeJob = {
   id: "job_ht_starter",
   restaurantId: HARBOR_ID,
+  brandDnaId: harborDna.id,
   type: "STARTER_PACKAGE",
   status: "SUCCEEDED",
   progress: 100,
@@ -419,10 +431,11 @@ const jobStarter: CreativeJob = {
 const jobSocial: CreativeJob = {
   id: "job_ht_social",
   restaurantId: HARBOR_ID,
+  brandDnaId: harborDna.id,
   type: "SOCIAL_CONCEPTS",
   status: "SUCCEEDED",
   progress: 100,
-  input: { count: 12 },
+  input: { count: 12, brandDnaId: harborDna.id },
   output: { concepts: 12 },
   error: null,
   startedAt: "2026-08-04T18:24:00.000Z",
@@ -434,10 +447,11 @@ const jobSocial: CreativeJob = {
 const jobVideo: CreativeJob = {
   id: "job_ht_video",
   restaurantId: HARBOR_ID,
+  brandDnaId: harborDna.id,
   type: "VIDEO_CONCEPTS",
   status: "SUCCEEDED",
   progress: 100,
-  input: { count: 4 },
+  input: { count: 4, brandDnaId: harborDna.id },
   output: { concepts: 4 },
   error: null,
   startedAt: "2026-08-04T18:25:00.000Z",
@@ -449,6 +463,7 @@ const jobVideo: CreativeJob = {
 const socialItems: ContentItem[] = socialConcepts.map((c, i) => ({
   id: `ci_ht_s${i + 1}`,
   restaurantId: HARBOR_ID,
+  brandDnaId: harborDna.id,
   jobId: jobSocial.id,
   kind: "SOCIAL_IMAGE",
   status: i < 8 ? "APPROVED" : "IN_REVIEW",
@@ -471,6 +486,7 @@ const socialItems: ContentItem[] = socialConcepts.map((c, i) => ({
 const videoItems: ContentItem[] = videos.map((v, i) => ({
   id: v.id,
   restaurantId: HARBOR_ID,
+  brandDnaId: harborDna.id,
   jobId: jobVideo.id,
   kind: "VIDEO_STORYBOARD",
   status: i === 0 ? "APPROVED" : "IN_REVIEW",
@@ -489,6 +505,7 @@ const menuItems: ContentItem[] = [
   {
     id: "ci_ht_menu_1",
     restaurantId: HARBOR_ID,
+    brandDnaId: harborDna.id,
     jobId: jobStarter.id,
     kind: "MENU_ASSET",
     status: "APPROVED",
@@ -505,6 +522,7 @@ const menuItems: ContentItem[] = [
   {
     id: "ci_ht_menu_2",
     restaurantId: HARBOR_ID,
+    brandDnaId: harborDna.id,
     jobId: jobStarter.id,
     kind: "MENU_ASSET",
     status: "APPROVED",
@@ -523,6 +541,7 @@ const menuItems: ContentItem[] = [
 const gbpItem: ContentItem = {
   id: "ci_ht_gbp",
   restaurantId: HARBOR_ID,
+  brandDnaId: harborDna.id,
   jobId: jobStarter.id,
   kind: "GOOGLE_BUSINESS",
   status: "APPROVED",
@@ -544,6 +563,7 @@ const gbpItem: ContentItem = {
 const extraCalendar: ContentItem[] = Array.from({ length: 10 }, (_, i) => ({
   id: `ci_ht_cal_${i + 13}`,
   restaurantId: HARBOR_ID,
+  brandDnaId: harborDna.id,
   jobId: jobStarter.id,
   kind: "CAPTION" as const,
   status: "SCHEDULED" as const,
@@ -638,6 +658,7 @@ export function buildLimeStarterPackage(nowIso = new Date().toISOString()): {
     {
       id: jobId,
       restaurantId: LIME_ID,
+      brandDnaId: limeDna.id,
       type: "STARTER_PACKAGE",
       status: "SUCCEEDED",
       progress: 100,
@@ -652,10 +673,11 @@ export function buildLimeStarterPackage(nowIso = new Date().toISOString()): {
     {
       id: socialJob,
       restaurantId: LIME_ID,
+      brandDnaId: limeDna.id,
       type: "SOCIAL_CONCEPTS",
       status: "SUCCEEDED",
       progress: 100,
-      input: { count: 12 },
+      input: { count: 12, brandDnaId: limeDna.id },
       output: { concepts: 12 },
       error: null,
       startedAt: nowIso,
@@ -666,10 +688,11 @@ export function buildLimeStarterPackage(nowIso = new Date().toISOString()): {
     {
       id: videoJob,
       restaurantId: LIME_ID,
+      brandDnaId: limeDna.id,
       type: "VIDEO_CONCEPTS",
       status: "SUCCEEDED",
       progress: 100,
-      input: { count: 4 },
+      input: { count: 4, brandDnaId: limeDna.id },
       output: { concepts: 4 },
       error: null,
       startedAt: nowIso,
@@ -698,6 +721,7 @@ export function buildLimeStarterPackage(nowIso = new Date().toISOString()): {
     ...limeSocial.map((title, i) => ({
       id: `ci_ll_s${i + 1}`,
       restaurantId: LIME_ID,
+      brandDnaId: limeDna.id,
       jobId: socialJob,
       kind: "SOCIAL_IMAGE" as const,
       status: (i < 6 ? "APPROVED" : "IN_REVIEW") as ContentItem["status"],
@@ -719,6 +743,7 @@ export function buildLimeStarterPackage(nowIso = new Date().toISOString()): {
     ...["Herb hands", "Coffee drip", "Patio open", "Bright bowls"].map((title, i) => ({
       id: `ci_ll_v${i + 1}`,
       restaurantId: LIME_ID,
+      brandDnaId: limeDna.id,
       jobId: videoJob,
       kind: "VIDEO_STORYBOARD" as const,
       status: "IN_REVIEW" as const,
@@ -763,6 +788,7 @@ export function buildLimeStarterPackage(nowIso = new Date().toISOString()): {
     {
       id: "ci_ll_menu",
       restaurantId: LIME_ID,
+      brandDnaId: limeDna.id,
       jobId,
       kind: "MENU_ASSET",
       status: "APPROVED",
@@ -779,6 +805,7 @@ export function buildLimeStarterPackage(nowIso = new Date().toISOString()): {
     {
       id: "ci_ll_gbp",
       restaurantId: LIME_ID,
+      brandDnaId: limeDna.id,
       jobId,
       kind: "GOOGLE_BUSINESS",
       status: "APPROVED",
@@ -871,12 +898,12 @@ export function createSeedSnapshot(): AppSnapshot {
       createdAt: "2026-08-01T12:00:00.000Z",
       updatedAt: now,
     },
-    restaurants: [harbor, lime],
-    brandDnas: [harborDna, limeDna],
-    assets: [...harborAssets, ...limeAssets],
-    jobs: [jobStarter, jobSocial, jobVideo],
-    contentItems: [...socialItems, ...videoItems, ...menuItems, gbpItem, ...extraCalendar],
-    websites: [harborWebsite],
+    restaurants: [harbor, lime, meetU],
+    brandDnas: [harborDna, limeDna, meetUDnaSuperseded, meetUDna],
+    assets: [...harborAssets, ...limeAssets, ...meetUAssets],
+    jobs: [jobStarter, jobSocial, jobVideo, meetUStarterJob, meetUCalendarJob],
+    contentItems: [...socialItems, ...videoItems, ...menuItems, gbpItem, ...extraCalendar, ...meetUContent],
+    websites: [harborWebsite, meetUWebsite],
     campaigns: [
       {
         id: "cmp_ht_fall",
@@ -889,9 +916,11 @@ export function createSeedSnapshot(): AppSnapshot {
         createdAt: now,
         updatedAt: now,
       },
+      meetUCampaign,
     ],
   };
 }
 
+export { MEET_U_ID } from "@/lib/mock/seed-meet-u";
 export const DEMO_EMAIL = "demo@hearth.app";
 export const DEMO_PASSWORD = "demo";
