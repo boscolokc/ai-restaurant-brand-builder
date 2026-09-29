@@ -57,9 +57,9 @@ export function brandTypeName(dna: BrandDNA | null | undefined, restaurant?: Res
 
 export function personalityChips(dna: BrandDNA | null | undefined) {
   const chips: { label: string; tone: "fill" | "outline" }[] = [];
-  const bits = (dna?.personality ?? "")
-    .split(/[.]/)
-    .flatMap((part) => part.split(","))
+  const head = (dna?.personality ?? "").split(";")[0] ?? "";
+  const bits = head
+    .split(/[.,·]/)
     .map((s) => s.trim())
     .filter(Boolean);
   for (const bit of bits) {

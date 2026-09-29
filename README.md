@@ -74,7 +74,7 @@ One hospitality group, **three restaurants**:
 
 1. **Harbor Table** (`/app/harbor-table`) — onboarding complete, approved Brand DNA, full starter package. Jobs and content carry `brandDnaId`.
 2. **Little Lime** (`/app/little-lime`) — waiting on Brand DNA review. Approve it to unlock a mock starter package on Home.
-3. **见您一面 / Meet U 1 Face Noodle** (`/app/meet-u-1-face`) — G-52 ICC Pudu, KL. Approved Brand DNA id `branddna_meetu_v1` (v1, panda-only Mode B). Week-1 calendar, 12 social concepts, and 4 video concepts carry that id. One `NEEDS_RELOCK` row still points at superseded `branddna_meetu_prelock`.
+3. **见您一面 / Meet U 1 Face Noodle** (`/app/meet-u-1-face`) — G-52 ICC Pudu, KL. Approved Brand DNA id `branddna_meetu_v2` (v2). Mode A is the panda; Mode B may use the owned 饺子哥 chef caricature. Week-1 calendar, 12 social concepts, and 4 video concepts carry that id. One `NEEDS_RELOCK` row still points at superseded `branddna_meetu_v1`.
 
 Add another via **Add restaurant** to walk the full onboarding path (basics → photos → business → analyzing → Brand DNA → generating → done).
 

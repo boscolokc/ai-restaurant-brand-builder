@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { BrandStrip } from "@/components/brand-ui";
 import { FirstRunHome } from "@/components/first-run-home";
 import { PhotoTile } from "@/components/media";
 import { StarterPackageGrid } from "@/components/package";
@@ -43,8 +44,8 @@ export default function RestaurantHomePage() {
         title={restaurant.name}
         description={
           brandDna?.tagline
-            ? `${brandDna.tagline} Your starter package is ready to review — nothing posts until you say so.`
-            : "Finish your brand profile to unlock a starter package on this home screen."
+            ? `${brandDna.tagline} Your brand kit is ready — let’s keep growing. Nothing posts until you say so.`
+            : "Your brand kit is ready — let’s keep growing. Nothing posts until you say so."
         }
         actions={
           <Button asChild size="lg">
@@ -56,6 +57,11 @@ export default function RestaurantHomePage() {
         }
       />
 
+      {brandDna ? (
+        <div className="mb-8">
+          <BrandStrip dna={brandDna} href={`/app/${restaurantId}/brand`} />
+        </div>
+      ) : null}
       <div className="mb-8 grid gap-3 sm:grid-cols-4">
         <Stat label="Social concepts" value={starter.socialCreatives} />
         <Stat label="Video concepts" value={starter.videoConcepts} />

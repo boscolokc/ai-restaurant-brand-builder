@@ -17,7 +17,7 @@ export default function BrandKitPage() {
         title={`${restaurant?.name ?? "Restaurant"} kit`}
         description="Files and rules you can hand to a printer, a photographer, or a new cook who runs Instagram."
       />
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="brand-moment grid gap-4 rounded-[20px] p-4 lg:grid-cols-2 sm:p-6">
         <Card className="p-6">
           <h2 className="font-display text-2xl">Colour</h2>
           {brandDna?.colours ? (

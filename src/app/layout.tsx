@@ -33,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${sans.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-paper text-ink">
+      <body className="flex min-h-full flex-col bg-shell text-shell-fg">
         <AppStoreProvider>{children}</AppStoreProvider>
       </body>
     </html>
