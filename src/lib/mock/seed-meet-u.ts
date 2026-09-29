@@ -135,6 +135,7 @@ export const meetUDna: BrandDNA = {
   graphicStyle: approvedDna.graphicStyle,
   ctaStyle: approvedDna.ctaStyle,
   rawAnalysis: {
+    typeName: approvedDna.nameStack.cn,
     campaignTheme: "好好见面",
     hours: "Tue–Sun 6:30 AM–2:00 PM · Closed Monday · Last call 2:00 PM",
     address: "G-52 ICC Pudu, Kuala Lumpur",

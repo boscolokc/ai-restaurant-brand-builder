@@ -7,7 +7,7 @@ const plans = [
     name: "Kitchen",
     price: "$179",
     note: "/month, one restaurant",
-    points: ["Brand DNA + kit", "Mobile website", "12 social creatives", "4 video storyboards", "30-day plan"],
+    points: ["Brand profile + kit", "Mobile website", "12 social creatives", "4 video storyboards", "30-day plan"],
   },
   {
     name: "Group",

@@ -46,6 +46,12 @@
   --accent-2: var(--success);
   --gold: #a16207;
   --white: #ffffff;
+  /* Quiz and brand-profile washes. Shell chrome does not use these. */
+  --sage: #e4f0dc;
+  --peach: #fde6d4;
+  --lilac: #ece3f5;
+  --sky: #dceef4;
+  --sand: #f3ead8;
 }
 
 @theme inline {
@@ -83,6 +89,11 @@
   --color-accent-2: var(--accent-2);
   --color-gold: var(--gold);
   --color-white: var(--white);
+  --color-sage: var(--sage);
+  --color-peach: var(--peach);
+  --color-lilac: var(--lilac);
+  --color-sky: var(--sky);
+  --color-sand: var(--sand);
   --font-sans: var(--font-sans-ui);
   --font-display: var(--font-sans-ui);
   --font-mono: var(--font-geist-mono);
@@ -105,8 +116,10 @@ body {
   letter-spacing: -0.02em;
 }
 
+/* Shell stays slate. Fraunces and warm tokens apply on brand moments and the quiz column. */
 .brand-moment,
-.brand-surface {
+.brand-surface,
+.brand-type {
   --paper: var(--bg-page);
   --paper-2: var(--bg-hero);
   --ink: var(--text-primary);

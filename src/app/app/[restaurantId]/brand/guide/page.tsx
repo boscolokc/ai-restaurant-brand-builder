@@ -22,7 +22,7 @@ export default function BrandGuidePage() {
             : "No clipart chili peppers, no stock chef smile, no neon sale stickers.",
     },
     { title: "Voice", body: brandDna?.voice ?? "Short and specific." },
-    { title: "CTA", body: brandDna?.ctaStyle ?? "Invite people in. Don’t shout." },
+    { title: "Buttons", body: brandDna?.ctaStyle ?? "Invite people in. Don’t shout." },
   ];
   return (
     <div>

@@ -21,9 +21,9 @@ export const buttonVariants = cva(
         gold: "border border-line bg-white text-ink hover:bg-paper-2",
       },
       size: {
-        sm: "h-8 px-3 text-xs",
-        md: "h-10 px-4",
-        lg: "h-12 px-6 text-base",
+        sm: "h-11 min-h-11 px-4 text-sm",
+        md: "h-12 min-h-12 px-5 text-sm",
+        lg: "h-12 min-h-12 px-6 text-base",
       },
     },
     defaultVariants: { variant: "primary", size: "md" },
@@ -44,10 +44,7 @@ export function Button({
 
 export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={cn("rounded-lg border border-line bg-white", className)}
-      {...props}
-    />
+    <div className={cn("rounded-lg border border-line bg-white", className)} {...props} />
   );
 }
 
@@ -79,7 +76,7 @@ export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElem
   return (
     <input
       className={cn(
-        "h-10 w-full rounded-md border border-line bg-white px-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10",
+        "h-11 w-full rounded-md border border-line bg-white px-3 text-base text-ink placeholder:text-ink-soft/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10 sm:text-sm",
         className,
       )}
       {...props}
@@ -91,7 +88,7 @@ export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTex
   return (
     <textarea
       className={cn(
-        "min-h-28 w-full rounded-md border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-soft/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10",
+        "min-h-28 w-full rounded-md border border-line bg-white px-3 py-3 text-base text-ink placeholder:text-ink-soft/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10 sm:text-sm",
         className,
       )}
       {...props}
@@ -185,7 +182,7 @@ export function ComingSoon({
       <h2 className="mt-4 text-2xl font-semibold tracking-tight">{title}</h2>
       <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-soft">{description}</p>
       <p className="mt-6 text-xs uppercase tracking-wider text-ink-soft">
-        Phase 1 ships Brand DNA, starter package, website, and content. Live ads and posting come next.
+        Phase 1 is the brand kit, website, and posts. Ads and auto-posting come later.
       </p>
     </Card>
   );

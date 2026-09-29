@@ -1,57 +1,75 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { BrandBoard } from "@/components/brand-ui";
-import { Button, Card } from "@/components/ui";
+import { BrandResults } from "@/components/brand-ui";
+import { Card, Field, Textarea } from "@/components/ui";
+import { WizardActions } from "@/components/onboarding";
 import { useAppStore, useRestaurantBundle } from "@/lib/mock/store";
 
 export default function OnboardingBrandDnaPage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const router = useRouter();
   const { brandDna, restaurant } = useRestaurantBundle(restaurantId);
-  const { approveBrandDna, ensureDraftBrandDna } = useAppStore();
+  const { approveBrandDna, ensureDraftBrandDna, saveBrandDna } = useAppStore();
+  const [editing, setEditing] = useState(false);
 
   if (!brandDna) {
     return (
       <Card className="p-8">
-        <p>No draft yet.</p>
-        <Button
-          className="mt-4"
-          onClick={() => {
-            ensureDraftBrandDna(restaurantId);
-          }}
-        >
-          Draft Brand DNA
-        </Button>
+        <p className="font-display text-2xl">We don’t have a draft yet.</p>
+        <p className="mt-2 text-ink-soft">Give us a second and we’ll write a brand profile from what you shared.</p>
+        <WizardActions
+          restaurantId={restaurantId}
+          current="brand-dna"
+          continueLabel="Draft my brand profile"
+          onContinue={() => ensureDraftBrandDna(restaurantId)}
+        />
       </Card>
     );
   }
 
+  function approve() {
+    approveBrandDna(restaurantId);
+    router.push(`/app/${restaurantId}/onboarding/generating`);
+  }
+
   return (
-    <div className="brand-moment -mx-4 overflow-hidden px-4 py-8 sm:mx-0 sm:rounded-[20px] sm:px-6">
-      <p className="text-xs uppercase tracking-[0.18em] text-coral">Your brand profile</p>
-      <h1 className="font-display mt-2 text-4xl">Does this sound like {restaurant?.name}?</h1>
-      <p className="mt-2 max-w-2xl text-base leading-relaxed text-moment-muted">
-        Nothing else generates until you approve. If a line feels off, you can still continue — you can edit the profile
-        later.
-      </p>
-      <div className="mt-8">
-        <BrandBoard dna={brandDna} />
-      </div>
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Button
-          size="lg"
-          onClick={() => {
-            approveBrandDna(restaurantId);
-            router.push(`/app/${restaurantId}/onboarding/generating`);
-          }}
+    <div>
+      <BrandResults dna={brandDna} restaurant={restaurant} />
+      {editing ? (
+        <Card className="mt-5 space-y-4 p-5 sm:p-6">
+          <Field label="Tagline">
+            <Textarea
+              name="tagline"
+              defaultValue={brandDna.tagline ?? ""}
+              className="min-h-16"
+              onBlur={(e) => saveBrandDna(restaurantId, { tagline: e.target.value })}
+            />
+          </Field>
+          <Field label="What you’re known for">
+            <Textarea
+              defaultValue={brandDna.positioning ?? ""}
+              onBlur={(e) => saveBrandDna(restaurantId, { positioning: e.target.value })}
+            />
+          </Field>
+          <Field label="How you sound">
+            <Textarea
+              defaultValue={brandDna.voice ?? ""}
+              onBlur={(e) => saveBrandDna(restaurantId, { voice: e.target.value })}
+            />
+          </Field>
+        </Card>
+      ) : (
+        <button
+          type="button"
+          className="mt-4 min-h-11 text-sm text-ink-soft underline-offset-2 hover:underline"
+          onClick={() => setEditing(true)}
         >
-          Approve brand profile
-        </Button>
-        <Button size="lg" variant="outline" onClick={() => router.push(`/app/${restaurantId}/brand/edit`)}>
-          Edit first
-        </Button>
-      </div>
+          Change a few words
+        </button>
+      )}
+      <WizardActions restaurantId={restaurantId} current="brand-dna" onContinue={approve} />
     </div>
   );
 }

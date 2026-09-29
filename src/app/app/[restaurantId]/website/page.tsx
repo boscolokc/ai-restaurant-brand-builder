@@ -13,7 +13,7 @@ export default function WebsiteEditorPage() {
   if (!website) {
     return (
       <div>
-        <PageHeader title="No website yet" description="Approve Brand DNA and we’ll draft a mobile-first site from your board." />
+        <PageHeader title="No website yet" description="Approve your brand profile and we’ll draft a simple phone site." />
       </div>
     );
   }

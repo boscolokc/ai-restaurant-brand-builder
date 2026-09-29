@@ -16,9 +16,9 @@ export default function NewRestaurantPage() {
 
   return (
     <AccountChrome>
-      <h1 className="font-display text-4xl">A new restaurant</h1>
-      <p className="mt-2 max-w-xl text-sm text-ink-soft">
-        We’ll walk you through photos, Brand DNA, and a starter package. You can change everything later.
+      <h1 className="font-display text-3xl sm:text-4xl">Add a restaurant</h1>
+      <p className="mt-2 max-w-xl text-base text-ink-soft">
+        We’ll walk you through photos, a brand profile, and a starter kit. You can change everything later.
       </p>
       <Card className="mt-8 max-w-xl space-y-4 p-6">
         <Field label="Name">
@@ -34,13 +34,14 @@ export default function NewRestaurantPage() {
           <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
         </Field>
         <Button
+          className="min-h-12 w-full sm:w-auto"
           disabled={!name.trim()}
           onClick={() => {
             const r = addRestaurant({ name, cuisine, city, description });
             router.push(`/app/${r.id}/onboarding/basics`);
           }}
         >
-          Start onboarding
+          Continue
         </Button>
       </Card>
     </AccountChrome>
