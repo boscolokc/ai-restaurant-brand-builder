@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui";
 import { useAppStore, useRestaurant } from "@/lib/mock/store";
-import { cn, NAV_ITEMS, STEP_TO_PATH } from "@/lib/utils";
+import { cn, NAV_ITEMS } from "@/lib/utils";
 import { useEffect, useState, type ReactNode } from "react";
 
 const ICONS = {
@@ -67,7 +67,7 @@ export function MarketingHeader() {
 export function MarketingFooter() {
   return (
     <footer className="mt-auto border-t border-line py-8 text-center text-xs text-ink-soft">
-      Hearth — your AI restaurant branding & marketing team. Phase 1 scaffold.
+      Hearth — your AI restaurant branding & marketing team.
     </footer>
   );
 }
@@ -113,9 +113,9 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
   useEffect(() => {
     if (!restaurant) return;
     const onOnboarding = pathname.includes("/onboarding");
-    if (!restaurant.onboardingDone && !onOnboarding) {
-      const step = STEP_TO_PATH[restaurant.onboardingStep] ?? "basics";
-      router.replace(`/app/${restaurantId}/onboarding/${step}`);
+    const onHome = pathname === `/app/${restaurantId}` || pathname === `/app/${restaurantId}/`;
+    if (!restaurant.onboardingDone && !onOnboarding && !onHome) {
+      router.replace(`/app/${restaurantId}`);
     }
   }, [restaurant, pathname, restaurantId, router]);
 
@@ -133,18 +133,27 @@ export function AppShell({ restaurantId, children }: { restaurantId: string; chi
 
   const base = `/app/${restaurantId}`;
   const onboarding = pathname.includes("/onboarding");
+  const setupIncomplete = !restaurant.onboardingDone;
 
-  if (onboarding) {
+  if (onboarding || setupIncomplete) {
+    const reveal = pathname.includes("/onboarding/brand-dna");
     return (
-      <div className="flex min-h-full flex-col">
-        <header className="flex h-14 items-center justify-between border-b border-line bg-white px-4">
+      <div className="flex h-dvh min-h-0 flex-col">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-line bg-white px-4">
           <Logo />
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-ink-soft sm:inline">{restaurant.name}</span>
+          <div className="flex min-w-0 items-center gap-3">
+            <span className="hidden truncate text-sm text-ink-soft sm:inline">{restaurant.name}</span>
             <RestaurantSwitcher currentId={restaurantId} />
           </div>
         </header>
-        <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10">{children}</main>
+        <main
+          className={cn(
+            "brand-type mx-auto min-h-0 w-full flex-1 overflow-y-auto px-4 py-6",
+            reveal ? "max-w-3xl sm:max-w-4xl sm:py-8" : "max-w-xl sm:max-w-2xl sm:py-10",
+          )}
+        >
+          {children}
+        </main>
       </div>
     );
   }

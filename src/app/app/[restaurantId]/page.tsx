@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { FirstRunHome } from "@/components/first-run-home";
+import { PhotoTile } from "@/components/media";
 import { StarterPackageGrid } from "@/components/package";
 import { Badge, Button, Card, PageHeader, Stat } from "@/components/ui";
-import { PhotoTile } from "@/components/media";
 import { useRestaurantBundle } from "@/lib/mock/store";
 import { formatDate } from "@/lib/utils";
 import { Plus } from "lucide-react";
@@ -13,6 +14,22 @@ export default function RestaurantHomePage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const { restaurant, brandDna, assets, jobs, contentItems, starter } = useRestaurantBundle(restaurantId);
   if (!restaurant || !starter) return null;
+
+  const brandApproved = brandDna?.status === "APPROVED";
+  const ready = restaurant.onboardingDone && brandApproved;
+
+  if (!ready) {
+    return (
+      <FirstRunHome
+        restaurantId={restaurantId}
+        restaurantName={restaurant.name}
+        step={restaurant.onboardingStep}
+        onboardingDone={restaurant.onboardingDone}
+        brandApproved={Boolean(brandApproved)}
+        brandDna={brandDna}
+      />
+    );
+  }
 
   const upcoming = contentItems
     .filter((c) => c.scheduledFor)
@@ -27,7 +44,7 @@ export default function RestaurantHomePage() {
         description={
           brandDna?.tagline
             ? `${brandDna.tagline} Your starter package is ready to review — nothing posts until you say so.`
-            : "Finish Brand DNA to unlock a starter package on this home screen."
+            : "Finish your brand profile to unlock a starter package on this home screen."
         }
         actions={
           <Button asChild size="lg">
@@ -39,30 +56,14 @@ export default function RestaurantHomePage() {
         }
       />
 
-      {restaurant.onboardingDone && brandDna?.status === "APPROVED" ? (
-        <>
-          <div className="mb-8 grid gap-3 sm:grid-cols-4">
-            <Stat label="Social concepts" value={starter.socialCreatives} />
-            <Stat label="Video concepts" value={starter.videoConcepts} />
-            <Stat label="Assets" value={starter.assetCount} />
-            <Stat label="Plan items" value={starter.calendarDays} />
-          </div>
-          <h2 className="mb-4 text-base font-semibold">Starter package</h2>
-          <StarterPackageGrid restaurantId={restaurantId} starter={starter} />
-        </>
-      ) : (
-        <Card className="p-8">
-          <Badge tone="gold">Waiting on Brand DNA</Badge>
-          <h2 className="mt-3 text-xl font-semibold tracking-tight">Approve your brand, then we cook the kit.</h2>
-          <p className="mt-2 max-w-lg text-sm text-ink-soft">
-            Home stays quiet until you review positioning, voice, and colour. That’s on purpose — we don’t generate a
-            wall of posts from a guess.
-          </p>
-          <Button className="mt-6" asChild>
-            <Link href={`/app/${restaurantId}/onboarding/brand-dna`}>Review Brand DNA</Link>
-          </Button>
-        </Card>
-      )}
+      <div className="mb-8 grid gap-3 sm:grid-cols-4">
+        <Stat label="Social concepts" value={starter.socialCreatives} />
+        <Stat label="Video concepts" value={starter.videoConcepts} />
+        <Stat label="Assets" value={starter.assetCount} />
+        <Stat label="Plan items" value={starter.calendarDays} />
+      </div>
+      <h2 className="mb-4 text-base font-semibold">Starter package</h2>
+      <StarterPackageGrid restaurantId={restaurantId} starter={starter} />
 
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
         <Card className="p-5 lg:col-span-2">

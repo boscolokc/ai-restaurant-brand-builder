@@ -10,12 +10,12 @@ export default function RestaurantSwitcherPage() {
   const { snapshot } = useAppStore();
   return (
     <AccountChrome>
-      <div className="flex items-end justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm text-ink-soft">{snapshot.account.name}</p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight">Your restaurants</h1>
-          <p className="mt-2 text-sm text-ink-soft">
-            Three kitchens are seeded. Add another anytime — multi-restaurant is the default, not an upgrade.
+          <p className="mt-2 max-w-xl text-sm text-ink-soft">
+            Three kitchens are seeded. New ones start with a short quiz, then a brand profile.
           </p>
         </div>
         <Button asChild>
@@ -34,17 +34,15 @@ export default function RestaurantSwitcherPage() {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h2 className="text-lg font-semibold tracking-tight">{r.name}</h2>
-                    <p className="mt-1 text-sm text-ink-soft">
-                      {[r.cuisine, r.city].filter(Boolean).join(" · ")}
-                    </p>
+                    <p className="mt-1 text-sm text-ink-soft">{[r.cuisine, r.city].filter(Boolean).join(" · ")}</p>
                   </div>
                   <Badge tone={r.onboardingDone ? "green" : "gold"}>
                     {r.onboardingDone ? "Live kit" : "Onboarding"}
                   </Badge>
                 </div>
-                <p className="mt-4 text-sm text-ink">{dna?.tagline ?? "Brand DNA still in review"}</p>
+                <p className="mt-4 text-sm text-ink">{dna?.tagline ?? "Brand profile still in review"}</p>
                 <p className="mt-4 text-xs uppercase tracking-wider text-ink-soft">
-                  {r.onboardingDone ? "Open home" : `Continue · ${r.onboardingStep.replace("_", " ")}`}
+                  {r.onboardingDone ? "Open home" : `Continue · ${r.onboardingStep.replaceAll("_", " ")}`}
                 </p>
               </Card>
             </Link>

@@ -5,18 +5,18 @@ import { MarketingFooter, MarketingHeader } from "@/components/shell";
 const steps = [
   {
     n: "01",
-    title: "Show us the restaurant",
-    copy: "A few photos, the name, and how you cook. No brand questionnaire.",
+    title: "A short quiz",
+    copy: "Name, a few photos, optional hours. No brand questionnaire.",
   },
   {
     n: "02",
-    title: "Review your Brand DNA",
-    copy: "Positioning, voice, colour, type, and how photos and video should feel. You approve before anything ships.",
+    title: "A results page",
+    copy: "Your restaurant’s type, colours, and how you sound. You approve before we make posts.",
   },
   {
     n: "03",
-    title: "Get a starter package",
-    copy: "Brand kit, mobile site, social kit, 12 posts, 4 video storyboards, menu assets, Google copy, and a 30-day plan.",
+    title: "Chapters to open",
+    copy: "Website, social, videos, kit. One at a time — nothing posts itself.",
   },
 ];
 
@@ -32,8 +32,7 @@ export default function MarketingHome() {
               Your AI restaurant branding & marketing team.
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-soft">
-              Hearth turns food photos and a little context into Brand DNA — then a consistent starter package. Not a
-              generic poster generator.
+              A short quiz, then a brand profile you approve — then a starter package. Not a generic poster generator.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
