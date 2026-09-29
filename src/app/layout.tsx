@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Fraunces, Outfit, Geist_Mono } from "next/font/google";
+import { Fraunces, Geist_Mono, Inter } from "next/font/google";
 import { AppStoreProvider } from "@/lib/mock/store";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const sans = Inter({
+  variable: "--font-sans-ui",
   subsets: ["latin"],
 });
 
@@ -31,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${sans.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-paper text-ink">
         <AppStoreProvider>{children}</AppStoreProvider>

@@ -38,7 +38,7 @@ export default function BrandKitPage() {
           <h2 className="font-display text-2xl">Marks & generated files</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             {(generated.length ? generated : assets.slice(0, 3)).map((a) => (
-              <PhotoTile key={a.id} title={a.title} kind={a.kind} />
+              <PhotoTile key={a.id} title={a.title} kind={a.kind} expressive />
             ))}
           </div>
         </Card>

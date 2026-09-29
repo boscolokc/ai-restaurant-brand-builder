@@ -84,11 +84,52 @@ export type WebsiteTheme = {
   bodyFont: string;
 };
 
+export type SocialRatio = "1:1" | "4:5" | "9:16";
+
+export type CreativeMode = "A" | "B";
+
 export type SocialPayload = {
-  format: "1:1" | "4:5" | "9:16";
+  format: SocialRatio;
   overlay: string;
   caption: string;
   hashtags: string[];
+};
+
+/** Creative Studio social concept, stored on ContentItem.payload. */
+export type SocialConceptPayload = {
+  postId: string;
+  pillar: string;
+  objective: string;
+  captionZh: string;
+  captionEn: string;
+  visualConcept: string;
+  mode: CreativeMode;
+  cta: string;
+  ratios: SocialRatio[];
+  layoutNotesByRatio: Partial<Record<SocialRatio, string>>;
+};
+
+export type ScriptBeat = {
+  startSec: number;
+  endSec: number;
+  line: string;
+};
+
+export type StoryboardFrameNote = {
+  order: number;
+  description: string;
+};
+
+/** Creative Studio video concept, stored on ContentItem.payload. */
+export type VideoConceptPayload = {
+  videoId: string;
+  title: string;
+  durationSec: number;
+  mode: CreativeMode;
+  scriptBeats: ScriptBeat[];
+  storyboardFrames: StoryboardFrameNote[];
+  shotList: string[];
+  previewBrief: string;
 };
 
 export type VideoFrame = {
@@ -129,7 +170,13 @@ export type CalendarPayload = {
   campaignTheme?: string;
 };
 
-export type ContentPayload = Record<string, unknown> | SocialPayload | VideoPayload | CalendarPayload;
+export type ContentPayload =
+  | Record<string, unknown>
+  | SocialPayload
+  | SocialConceptPayload
+  | VideoPayload
+  | VideoConceptPayload
+  | CalendarPayload;
 
 export type Account = {
   id: string;

@@ -35,7 +35,7 @@ export function FirstRunHome({
   const onPrimary = inkOn(primary);
 
   return (
-    <div className="mx-auto max-w-xl">
+    <div className="brand-type mx-auto max-w-xl">
       {readyForReveal ? (
         <section
           className="relative overflow-hidden rounded-[2rem] px-6 py-12 text-center sm:py-14"

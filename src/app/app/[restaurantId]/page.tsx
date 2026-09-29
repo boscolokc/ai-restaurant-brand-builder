@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FirstRunHome } from "@/components/first-run-home";
+import { PhotoTile } from "@/components/media";
 import { StarterPackageGrid } from "@/components/package";
-import { Button } from "@/components/ui";
+import { Badge, Button, Card, PageHeader, Stat } from "@/components/ui";
 import { useRestaurantBundle } from "@/lib/mock/store";
-import { brandTypeName, firstSentence, inkOn } from "@/lib/brand-profile";
+import { formatDate } from "@/lib/utils";
+import { Plus } from "lucide-react";
 
 export default function RestaurantHomePage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
-  const { restaurant, brandDna, starter } = useRestaurantBundle(restaurantId);
+  const { restaurant, brandDna, assets, jobs, contentItems, starter } = useRestaurantBundle(restaurantId);
   if (!restaurant || !starter) return null;
 
   const brandApproved = brandDna?.status === "APPROVED";
@@ -29,45 +31,89 @@ export default function RestaurantHomePage() {
     );
   }
 
-  const typeName = brandDna ? brandTypeName(brandDna, restaurant) : restaurant.name;
-  const primary = brandDna?.colours?.primary ?? "#2f4a32";
-  const onPrimary = inkOn(primary);
+  const upcoming = contentItems
+    .filter((c) => c.scheduledFor)
+    .sort((a, b) => (a.scheduledFor ?? "").localeCompare(b.scheduledFor ?? ""))
+    .slice(0, 5);
 
   return (
-    <div className="-mx-4 -mt-8 sm:-mx-8 sm:-mt-8">
-      <section
-        className="relative overflow-hidden px-5 py-14 text-center sm:px-10 sm:py-20"
-        style={{ background: primary, color: onPrimary }}
-      >
-        <div className="pointer-events-none absolute -right-16 -top-10 h-48 w-48 rounded-full bg-white/10" />
-        <p className="text-sm font-medium tracking-[0.22em] uppercase opacity-80">{restaurant.name}</p>
-        <h1 className="mt-4 font-display text-5xl leading-[1.05] sm:text-6xl">{typeName}</h1>
-        {brandDna?.tagline ? (
-          <p className="mx-auto mt-4 max-w-lg font-display text-xl italic sm:text-2xl">{brandDna.tagline}</p>
-        ) : null}
-        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
-          {firstSentence(brandDna?.positioning) || "Your starter kit is ready. Pick one chapter — nothing posts until you say so."}
-        </p>
-        <Button asChild size="lg" variant="ink" className="mt-8 min-h-12 bg-white text-ink hover:bg-white/90">
-          <Link href={`/app/${restaurantId}/create`}>Create a post</Link>
-        </Button>
-      </section>
+    <div>
+      <PageHeader
+        eyebrow={restaurant.cuisine ?? "Restaurant"}
+        title={restaurant.name}
+        description={
+          brandDna?.tagline
+            ? `${brandDna.tagline} Your starter package is ready to review — nothing posts until you say so.`
+            : "Finish your brand profile to unlock a starter package on this home screen."
+        }
+        actions={
+          <Button asChild size="lg">
+            <Link href={`/app/${restaurantId}/create`}>
+              <Plus className="h-4 w-4" />
+              Create content
+            </Link>
+          </Button>
+        }
+      />
 
-      <section className="px-4 py-12 sm:px-8 sm:py-16">
-        <p className="text-sm font-medium tracking-[0.18em] text-ink-soft uppercase">What’s next</p>
-        <h2 className="mt-2 font-display text-3xl sm:text-4xl">Open one chapter at a time</h2>
-        <p className="mt-3 max-w-xl text-base leading-relaxed text-ink-soft">
-          Website, posts, videos, kit. Short blurbs — not a table of jobs.
-        </p>
-        <div className="mt-8">
-          <StarterPackageGrid restaurantId={restaurantId} starter={starter} />
-        </div>
-        <p className="mt-8 text-center">
-          <Link href={`/app/${restaurantId}/brand`} className="text-sm text-ink-soft underline-offset-4 hover:underline">
-            Re-read the full brand profile
-          </Link>
-        </p>
-      </section>
+      <div className="mb-8 grid gap-3 sm:grid-cols-4">
+        <Stat label="Social concepts" value={starter.socialCreatives} />
+        <Stat label="Video concepts" value={starter.videoConcepts} />
+        <Stat label="Assets" value={starter.assetCount} />
+        <Stat label="Plan items" value={starter.calendarDays} />
+      </div>
+      <h2 className="mb-4 text-base font-semibold">Starter package</h2>
+      <StarterPackageGrid restaurantId={restaurantId} starter={starter} />
+
+      <div className="mt-10 grid gap-6 lg:grid-cols-3">
+        <Card className="p-5 lg:col-span-2">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-sm font-semibold">Coming up</h3>
+            <Link href={`/app/${restaurantId}/content`} className="text-sm text-ink-soft hover:text-ink">
+              Calendar
+            </Link>
+          </div>
+          <ul className="divide-y divide-line">
+            {upcoming.length === 0 ? (
+              <li className="py-6 text-sm text-ink-soft">No scheduled pieces yet.</li>
+            ) : (
+              upcoming.map((item) => (
+                <li key={item.id} className="flex items-center justify-between gap-3 py-3">
+                  <div>
+                    <p className="text-sm">{item.title}</p>
+                    <p className="text-xs text-ink-soft">
+                      {item.platform ?? item.kind} · {formatDate(item.scheduledFor)}
+                    </p>
+                  </div>
+                  <Badge tone={item.status === "NEEDS_RELOCK" ? "accent" : "muted"}>
+                    {item.status.replaceAll("_", " ")}
+                  </Badge>
+                </li>
+              ))
+            )}
+          </ul>
+        </Card>
+        <Card className="p-5">
+          <h3 className="text-sm font-semibold">Recent jobs</h3>
+          <ul className="mt-3 space-y-3">
+            {jobs.slice(0, 4).map((job) => (
+              <li key={job.id}>
+                <Link href={`/app/${restaurantId}/jobs/${job.id}`} className="text-sm hover:underline">
+                  {job.type.replaceAll("_", " ").toLowerCase()}
+                </Link>
+                <p className="text-xs text-ink-soft">
+                  {job.status.toLowerCase()} · {job.progress}%
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {assets.slice(0, 4).map((a) => (
+              <PhotoTile key={a.id} title={a.title} kind={a.kind} className="min-h-24" />
+            ))}
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }

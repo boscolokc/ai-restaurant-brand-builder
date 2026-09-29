@@ -59,7 +59,7 @@ export function BrandResults({
   const blurb = firstSentence(dna.positioning);
 
   return (
-    <article className={cn("overflow-hidden rounded-[2rem]", className)}>
+    <article className={cn("brand-type overflow-hidden rounded-[2rem]", className)}>
       <section
         className="relative overflow-hidden px-5 py-14 text-center sm:px-10 sm:py-20"
         style={{ background: primary, color: onPrimary }}

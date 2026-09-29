@@ -108,7 +108,7 @@ export function ProgressList({ items, active }: { items: string[]; active: numbe
               className={cn(
                 "mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-medium",
                 done && "bg-accent-2 text-white",
-                current && "bg-accent text-white",
+                current && "bg-ink text-white",
                 !done && !current && "border border-line text-ink-soft",
               )}
             >

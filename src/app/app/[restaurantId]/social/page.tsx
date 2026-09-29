@@ -33,7 +33,7 @@ export default function SocialKitPage() {
         </Card>
         <div className="grid gap-3 sm:grid-cols-2 lg:col-span-2">
           {posts.map((p) => (
-            <PhotoTile key={p.id} title={p.title} overlay={p.title} />
+            <PhotoTile key={p.id} title={p.title} overlay={p.title} expressive />
           ))}
         </div>
       </div>

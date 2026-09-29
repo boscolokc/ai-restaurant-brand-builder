@@ -17,7 +17,7 @@ export default async function LoginPage({
         <p className="mt-2 text-sm text-ink-soft">
           Demo login: {DEMO_EMAIL} / {DEMO_PASSWORD}. Or continue without typing.
         </p>
-        {q.error ? <p className="mt-3 text-sm text-accent">That password didn’t match the demo account.</p> : null}
+        {q.error ? <p className="mt-3 text-sm text-red-700">That password didn’t match the demo account.</p> : null}
         <form action="/api/auth/login" method="post" className="mt-6 space-y-4">
           <input type="hidden" name="next" value={q.next ?? "/app"} />
           <Field label="Email">
